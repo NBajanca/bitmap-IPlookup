@@ -75,12 +75,14 @@ class BitmapTree:
     " output:
     " changes: @self.root_node
     "
-    " description: Creates the node, while creating childrens the method becomes recursive
+    " description: Creates the node, while creating children the method becomes recursive
+    "   Before checking for internal results and children the idxs are set to the next position availabel in each array
     """
     def create_node(self, node, ip):
         print("--- Building Node")
+        node.update_idx()
         self.check_for_internal_results(node, ip)
-        self.check_for_childrens(node, ip)
+        self.check_for_children(node, ip)
 
     """
     " check_for_internal_results()
@@ -114,23 +116,36 @@ class BitmapTree:
 
     #WARNING: NOT SAFE FOR STRIDES != 2
     """
-    " check_for_childrens()
+    " check_for_children()
     " 
     " input: @self, @node, @ip
     " output:
     " changes: @self.root_node
     "
-    " description: Goes trough all the ips possible for childrens of this node and calls a method to check if there is in fact a child for that ip
+    " description: Goes trough all the ips possible for children of this node and calls a method to check if there is in fact a child for that ip, creating an object if there is.
+    "   Loops the list of children created and creates the node(fills the object previously created) for each one (in this fase the function becames recursive - Each child will create all it's children before returning )
     """
-    def check_for_childrens(self, node, ip):
+    def check_for_children(self, node, ip):
         print("---- Building Child Bitmap")
         i = "000"
-        j = 0
-        while i != "111":
-            self.check_for_child(node,ip + i, j)
+        position = 0
+        children_nodes = []
+        children_ip = {}
+        child_node = None
+        while True:
+            complete_ip = ip + i
+            child_node = self.check_for_child(node,complete_ip, position)
+            if child_node:
+                children_nodes.append(child_node)
+                children_ip[children_nodes[-1]] = complete_ip
+                child_node = None
+            if i == "111":
+                break
             i= self.next_ip(i)
-            j +=1
+            position +=1
         print("---- Finish Child Bitmap")
+        for child_node in children_nodes:
+            self.create_node(child_node, children_ip[child_node])
 
     """
     " check_for_child()
@@ -148,8 +163,7 @@ class BitmapTree:
                 print("----- Adding Child")
                 print("------ ["+ str(position) +"] : "+ ip)
                 child_node = node.add_child (position)
-                self.create_node(child_node, ip)
-                return
+                return child_node
         
     """
     " next_ip()
@@ -187,7 +201,7 @@ class BitmapTree:
         print("\n\nPRINTING TREE\n--ROOT NODE")
         self.root_node.print_node()
         i=0
-        for node in self.root_node.childs:
+        for node in self.root_node.children:
             print("\n--NODE "+str(i))
             node.print_node()
             i+=1
@@ -199,10 +213,24 @@ class BitmapTree:
         
         
 #Example used in the first meating
+#switch_list = {}
+#switch_list["195.0.0.254"  ] = ["195.0.0.254","8" ,"00:00:00:11:11:01","s1","1"] 
+#switch_list["128.128.0.254"] = ["128.128.0.254","8","00:00:00:11:11:02","s2","2"] 
+#switch_list["154.128.0.254"] = ["154.128.0.254","8","00:00:00:11:11:03","s3","3"] 
+#switch_list["197.160.0.254"] = ["197.160.0.254","8","00:00:00:11:11:04","s4","4"]
+
+#Example used in the slides
 switch_list = {}
-switch_list["195.0.0.254"  ] = ["195.0.0.254","8" ,"00:00:00:11:11:01","s1","1"] 
-switch_list["128.128.0.254"] = ["128.128.0.254","8","00:00:00:11:11:02","s2","2"] 
-switch_list["154.128.0.254"] = ["154.128.0.254","8","00:00:00:11:11:03","s3","3"] 
-switch_list["197.160.0.254"] = ["197.160.0.254","8","00:00:00:11:11:04","s4","4"] 
+switch_list["0.0.0.254"  ] = ["0.0.0.254","0" ,"00:00:00:11:11:01","s1","1"] 
+switch_list["128.128.0.254"] = ["128.128.0.254","1","00:00:00:11:11:02","s2","2"] 
+switch_list["0.128.0.254"] = ["0.128.0.254","2","00:00:00:11:11:03","s3","3"] 
+switch_list["160.160.0.254"] = ["160.160.0.254","3","00:00:00:11:11:04","s4","4"]
+switch_list["224.0.0.254"  ] = ["224.0.0.254","3" ,"00:00:00:11:11:01","s1","1"] 
+switch_list["128.128.0.253"] = ["128.128.0.254","4","00:00:00:11:11:02","s2","2"] 
+switch_list["232.128.0.254"] = ["232.128.0.254","5","00:00:00:11:11:03","s3","3"] 
+switch_list["228.160.0.254"] = ["228.160.0.254","6","00:00:00:11:11:04","s4","4"]
+switch_list["134.160.0.254"] = ["134.160.0.254","7","00:00:00:11:11:04","s4","4"]
+
+
 tree = BitmapTree(switch_list, 2)
 tree.print_tree()

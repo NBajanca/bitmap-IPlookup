@@ -20,10 +20,11 @@ class Node:
     "
     " description: Constructor of the class, initializes the variables
     """
-    def __init__(self, root_node, internal_idx, child_idx):
+    def __init__(self, root_node):
         self.root_node = root_node
-        self.internal_idx = internal_idx
-        self.child_idx = child_idx
+        #Initialized for root_node - For other nodes it is updated during children discovery:
+        self.internal_idx = 0
+        self.child_idx = 0
         self.initialize_bitmap()
 
     #WARNING: NOT SAFE FOR STRIDES != 2
@@ -55,6 +56,19 @@ class Node:
 
     
     """
+    " update_idx()
+    " 
+    " input: @self
+    " output: 
+    " changes: @self.child_idx, @self.internal_idx
+    "
+    " description: Updates the idxs so they match the next position in the respective arrays
+    """
+    def update_idx(self):
+        self.child_idx = len(self.root_node.children)
+        self.internal_idx = len(self.root_node.results)
+
+    """
     " add_child()
     " 
     " input: @self, @position
@@ -63,7 +77,7 @@ class Node:
     "
     " description: Changes to 1 the @position of the @child_bitmap and calls the method @add_child_node of @root_node to create a new @child_node
     """
-    def add_child (self, position):
+    def add_child(self, position):
         self.child_bitmap[position] = 1
         return self.root_node.add_child_node()
     
@@ -128,10 +142,9 @@ class RootNode(Node):
     " description: Constructor of the class, initializes the variables. As this is the root_node the Super Constructor is called with idxs = 0
     """
     def __init__(self):
-        super(RootNode, self).__init__(self, 0, 0)
-        self.initialize_bitmap()
+        super(RootNode, self).__init__(self)
         self.results = []
-        self.childs = []
+        self.children = []
 
     """
     " add_result_info()
@@ -150,12 +163,12 @@ class RootNode(Node):
     " 
     " input: @self
     " output: @child_node
-    " changes: @self.childs
+    " changes: @self.children
     "
-    " description: Creates a new node, with the current array sizes as idxs and puts it in the @self.childs array
+    " description: Creates a new node, with the current array sizes as idxs and puts it in the @self.children array
     """
     def add_child_node(self):
-        child = Node(self, len(self.results), len(self.childs))
-        self.childs.append(child)
+        child = Node(self)
+        self.children.append(child)
         return child
 
