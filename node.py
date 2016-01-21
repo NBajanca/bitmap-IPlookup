@@ -14,14 +14,13 @@ class Node:
     """
     " __init__()
     " 
-    " input: @self, @root_node, @internal_idx, @child_idx
+    " input: @self
     " output:
-    " changes: @self.root_node, @self.internal_idx, @self.child_idx, @self.internal_bitmap, @self.child_bitmap
+    " changes: @self.internal_idx, @self.child_idx, @self.internal_bitmap, @self.child_bitmap
     "
     " description: Constructor of the class, initializes the variables
     """
-    def __init__(self, root_node):
-        self.root_node = root_node
+    def __init__(self):
         #Initialized for root_node - For other nodes it is updated during children discovery:
         self.internal_idx = 0
         self.child_idx = 0
@@ -46,40 +45,40 @@ class Node:
     " 
     " input: @self, @position, @result
     " output:
-    " changes: @self.internal_bitmap, @self.root_node
+    " changes: @self.internal_bitmap, @root_node
     "
     " description: Changes to 1 the @position of the @internal_bitmap and calls the method @add_result_info of @root_node to keep the @result
     """
-    def add_result(self, position, result):
+    def add_result(self, position, result, root_node):
         self.internal_bitmap[position] = 1
-        self.root_node.add_result_info(result)
+        root_node.add_result_info(result)
 
     
     """
     " update_idx()
     " 
-    " input: @self
+    " input: @self, @root_node
     " output: 
     " changes: @self.child_idx, @self.internal_idx
     "
     " description: Updates the idxs so they match the next position in the respective arrays
     """
-    def update_idx(self):
-        self.child_idx = len(self.root_node.children)
-        self.internal_idx = len(self.root_node.results)
+    def update_idx(self, root_node):
+        self.child_idx = len(root_node.children)
+        self.internal_idx = len(root_node.results)
 
     """
     " add_child()
     " 
-    " input: @self, @position
+    " input: @self, @position, @root_node
     " output: @child_node
-    " changes: @self.internal_bitmap, @self.root_node
+    " changes: @self.internal_bitmap
     "
     " description: Changes to 1 the @position of the @child_bitmap and calls the method @add_child_node of @root_node to create a new @child_node
     """
-    def add_child(self, position):
+    def add_child(self, position, root_node):
         self.child_bitmap[position] = 1
-        return self.root_node.add_child_node()
+        return root_node.add_child_node()
     
     """
     " number_of_ones()
@@ -137,12 +136,12 @@ class RootNode(Node):
     " 
     " input: @self
     " output:
-    " changes: @self.root_node, @self.internal_idx, @self.child_idx, @self.internal_bitmap, @self.child_bitmap
+    " changes: @self.internal_idx, @self.child_idx, @self.internal_bitmap, @self.child_bitmap
     "
     " description: Constructor of the class, initializes the variables. As this is the root_node the Super Constructor is called with idxs = 0
     """
     def __init__(self):
-        super(RootNode, self).__init__(self)
+        super(RootNode, self).__init__()
         self.results = []
         self.children = []
 
@@ -168,7 +167,7 @@ class RootNode(Node):
     " description: Creates a new node, with the current array sizes as idxs and puts it in the @self.children array
     """
     def add_child_node(self):
-        child = Node(self)
+        child = Node()
         self.children.append(child)
         return child
 

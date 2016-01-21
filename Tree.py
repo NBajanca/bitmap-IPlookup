@@ -21,32 +21,32 @@ class BitmapTree:
     " 
     " input: @self, @switch_list, @stride
     " output:
-    " changes: @self.switch_list, @self.stride, @self.switches_network, self.root_node
+    " changes: @self.stride, @self.switches_network, self.root_node
     "
     " description: Constructor of the class, calls method to build the tree
     """
     def __init__(self, switch_list, stride):
-        self.switch_list = switch_list
         self.stride = stride
-        self.switch_list_to_switches_network()
+        self.switch_list_to_switches_network(switch_list)
+        print("-- Building Bitmap Tree (stride = "+ str(self.stride) +") with "+ str(len(switch_list)) +" Switches")
         self.build_tree()
 
     """
     " switch_list_to_switches_network()
     " 
-    " input: @self
+    " input: @self, @switch_list
     " output:
     " changes: @self.switches_network
     "
     " description: Converts the ips from the switch_list to binary. Then applies the network mask to the ips to get the Prefix Table.
     """
-    def switch_list_to_switches_network(self):
+    def switch_list_to_switches_network(self, switch_list):
         print("-- Creating Switches Network Array (Prefix Table)")
         self.switches_network = {}
         i = 0
-        for switch in self.switch_list:
+        for switch in switch_list:
             ip_network = "".join([bin(int(x)+256)[3:] for x in switch.split('.')])
-            ip_network = ip_network[:int(self.switch_list[switch][SUBNET])]
+            ip_network = ip_network[:int(switch_list[switch][SUBNET])]
             self.switches_network[ip_network] = switch
             print("--- ["+ self.switches_network[ip_network] +"] : "+ip_network)
         print("-- Finished Switches Network Array\n")
@@ -61,7 +61,6 @@ class BitmapTree:
     " description: Creates the bitmap tree. Starts by creating the root_node and then enters a recursive algorithm to build the complete tree
     """
     def build_tree(self):
-        print("-- Building Bitmap Tree (stride = "+ str(self.stride) +") with "+ str(len(self.switch_list)) +" Switches")
         print("--- Creating Root Node")
         self.root_node = RootNode()
         self.create_node(self.root_node,"")
@@ -80,7 +79,7 @@ class BitmapTree:
     """
     def create_node(self, node, ip):
         print("--- Building Node")
-        node.update_idx()
+        node.update_idx(self.root_node)
         self.check_for_internal_results(node, ip)
         self.check_for_children(node, ip)
 
@@ -106,7 +105,7 @@ class BitmapTree:
                 result = self.switches_network[ip+actual_ip]
                 del self.switches_network[ip+actual_ip]
                 print("------ ["+ str(actual_idx) +"] : "+ result)
-                node.add_result(actual_idx, result)
+                node.add_result(actual_idx, result, self.root_node)
             if actual_ip == max_ip:
                 break
             else:
@@ -162,7 +161,7 @@ class BitmapTree:
             if network.startswith(ip):
                 print("----- Adding Child")
                 print("------ ["+ str(position) +"] : "+ ip)
-                child_node = node.add_child (position)
+                child_node = node.add_child (position, self.root_node)
                 return child_node
         
     """
