@@ -9,28 +9,24 @@ class Node:
     child_idx = ""
     internal_bitmap = []
     child_bitmap = []
-    #stride = 2
 
 
-    def __init__(self, internal_idx, child_idx, stride):
+    def __init__(self, internal_idx = 0, child_idx = 0, stride = 2):
         """Constructor of the class, initializes the variables
 
         Initialized for root_node - For other nodes it is updated 
         during children discovery
         """
-        self.stride = stride
-        #print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +  str(Node.stride))
         self.internal_idx = internal_idx
         self.child_idx = child_idx
-        self.initialize_bitmap()
+        self.initialize_bitmap(stride)
 
 
-    def initialize_bitmap(self):
+    def initialize_bitmap(self, stride = 2):
         """Initializes bitmaps to zero"""
-        #Node.stride = stride
         self.internal_bitmap = []
         self.child_bitmap = []
-        for i in range(0,self.max_nodes_in_node(self.stride)):
+        for i in range(0,self.max_nodes_in_node(stride)):
             self.internal_bitmap.append(0)
             self.child_bitmap.append(0)
         self.child_bitmap.append(0)
@@ -64,13 +60,13 @@ class Node:
         self.internal_idx = len(root_node.results)
 
 
-    def add_child(self, position, root_node):
+    def add_child(self, position, root_node, stride):
         """Changes to 1 the @position of the @child_bitmap and calls 
         the method @add_child_node of @root_node to create a new 
         @child_node
         """
         self.child_bitmap[position] = 1
-        return root_node.add_child_node()
+        return root_node.add_child_node(stride)
     
 
     def number_of_ones(self, bitmap_id, position):
@@ -109,7 +105,7 @@ class RootNode(Node):
 
     def __init__(self, stride):
         """Constructor of the class, initializes the variables"""
-        super(RootNode, self).__init__(0,0,stride)
+        super(RootNode, self).__init__(stride = stride)
         results = []
         children = []
 
@@ -119,11 +115,11 @@ class RootNode(Node):
         self.results.append(result)
 
 
-    def add_child_node(self):
+    def add_child_node(self, stride):
         """Creates a new node, with the current array sizes as idxs and 
         puts it in the @self.children array
         """
-        child = Node(0,0,self.stride)
+        child = Node(stride = stride)
         self.children.append(child)
         return child
 
