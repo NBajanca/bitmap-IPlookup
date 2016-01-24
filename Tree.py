@@ -16,14 +16,17 @@ CHILDREN = 1
 
 class BitmapTree:
     """Bitmap Tree Class, enables ip-lookup for Ryu Openflow controler"""
-    stride = ""
+    #stride = None
     switches_network = {}
     root_node = ""
 
 
-    def __init__(self, switch_list, stride = 2):
+    def __init__(self, switch_list, stride):
         """Constructor of the class, calls method to build the tree"""
-        self.stride = stride
+        #self.stride = stride
+        print ("")
+        BitmapTree.stride = stride #assim ou usar instance variables?? Este nao e o sitio mais correcto para fazer isto acho eu
+        #print ("--------------------" + str(stride) + "------------" + str(self.stride)+"--------"+str(BitmapTree.stride))
         self.switch_list_to_switches_network(switch_list)
         print("-- Building Bitmap Tree (stride = "+ str(self.stride)
             + ") with " + str(len(switch_list)) +" Switches")
@@ -38,6 +41,9 @@ class BitmapTree:
             prefix = self.ip_to_prefix(switch, 
             int(switch_list[switch][SUBNET]))
             self.add_prefix_to_table(prefix, switch_list[switch][DPID])
+        #changed part 
+        for ip,id2 in sorted(self.switches_network.items(), key=lambda x:x[1]): #all
+            print("--- ["+ id2 +"] : "+ ip)
         print("-- Finished Switches Network Array\n")
 
     
@@ -59,8 +65,8 @@ class BitmapTree:
 
     def add_prefix_to_table(self, prefix, dpid):
         self.switches_network[prefix] = dpid
-        print("--- ["+ self.switches_network[prefix] +"] : "
-                + prefix)
+        #print("--- ["+ dpid +"] : "
+         #       + self.switches_network[dpid])
 
 
     def build_tree(self):
@@ -71,7 +77,7 @@ class BitmapTree:
 
         """
         print("--- Creating Root Node")
-        self.root_node = RootNode()
+        self.root_node = RootNode(self.stride)
         self.create_node(self.root_node)
         print("-- Bitmap Tree Built with Success")
 
@@ -80,8 +86,8 @@ class BitmapTree:
         """Creates the node, while creating children the method becomes 
         recursive.
         
-        Before checking for internal results and children the idxs are 
-        set to the next position availabel in each array
+        Before checking for internal results and children, the idxs are 
+        set to the next position available in each array
         """
         print("--- Building Node")
         node.update_idx(self.root_node)
@@ -200,7 +206,7 @@ class BitmapTree:
         self.root_node.print_node()
         i=0
         for node in self.root_node.children:
-            print("\n--NODE "+str(i))
+            print("\n--NODE "+str(i+1))
             node.print_node()
             i+=1
         print("\n\n--RESULTS")
@@ -230,5 +236,5 @@ switch_list["228.160.0.254"] = ["228.160.0.254","6","00:00:00:11:11:04","s8","8"
 switch_list["134.160.0.254"] = ["134.160.0.254","7","00:00:00:11:11:04","s9","9"]
 
 
-tree = BitmapTree(switch_list, 2)
+tree = BitmapTree(switch_list, 11)
 tree.print_tree()

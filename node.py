@@ -9,24 +9,28 @@ class Node:
     child_idx = ""
     internal_bitmap = []
     child_bitmap = []
+    #stride = 2
 
 
-    def __init__(self, internal_idx = 0, child_idx = 0, stride = 2):
+    def __init__(self, internal_idx, child_idx, stride):
         """Constructor of the class, initializes the variables
 
         Initialized for root_node - For other nodes it is updated 
         during children discovery
         """
+        self.stride = stride
+        #print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +  str(Node.stride))
         self.internal_idx = internal_idx
         self.child_idx = child_idx
-        self.initialize_bitmap(stride)
+        self.initialize_bitmap()
 
 
-    def initialize_bitmap(self, stride = 2):
+    def initialize_bitmap(self):
         """Initializes bitmaps to zero"""
+        #Node.stride = stride
         self.internal_bitmap = []
         self.child_bitmap = []
-        for i in range(0,self.max_nodes_in_node(stride)):
+        for i in range(0,self.max_nodes_in_node(self.stride)):
             self.internal_bitmap.append(0)
             self.child_bitmap.append(0)
         self.child_bitmap.append(0)
@@ -103,9 +107,9 @@ class RootNode(Node):
     children = []
 
 
-    def __init__(self):
+    def __init__(self, stride):
         """Constructor of the class, initializes the variables"""
-        super(RootNode, self).__init__()
+        super(RootNode, self).__init__(0,0,stride)
         results = []
         children = []
 
@@ -119,7 +123,7 @@ class RootNode(Node):
         """Creates a new node, with the current array sizes as idxs and 
         puts it in the @self.children array
         """
-        child = Node()
+        child = Node(0,0,self.stride)
         self.children.append(child)
         return child
 
