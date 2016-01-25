@@ -38,7 +38,8 @@ class BitmapTree:
             prefix = self.ip_to_prefix(switch, 
             int(switch_list[switch][SUBNET]))
             self.add_prefix_to_table(prefix, switch_list[switch][DPID])
-        for ip,id2 in sorted(self.switches_network.items(), key=lambda x:x[1]):
+        for ip,id2 in sorted(self.switches_network.items(), 
+            key=lambda x:x[1]):
             print("--- ["+ id2 +"] : "+ ip)
         print("-- Finished Switches Network Array\n")
 
