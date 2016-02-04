@@ -191,7 +191,8 @@ class BitmapTree:
         elif (last_char == "1"):
             for i in range (last_idx - 1, -1, -1):
                 if(actual_ip[i] == "0"):
-                    return actual_ip[:i] + "1" + "".join("0" for x in range (i, last_idx))
+                    return actual_ip[:i] + "1" + "".join("0" for x in range (i
+                        , last_idx))
             return "".join("0" for x in range (last_idx + 2))
 
 
@@ -211,34 +212,53 @@ class BitmapTree:
             i+=1  
 
     def ip_lookup(self, ip):
+        """Method respondible for the ip_lookup. Receives an ip and goes
+        to the tree until the end, finding the longest prefix match.
+
+        Searches if there is a child and them gets, if possible, the
+        result correspondent to the longest match (until now).
+        Goes to next node, if it was found, or stops the search
+        returning the last result obtained.
+        """
         ip_bin = self.ip_to_bin(ip)
         print("\n\nLookup of IP "+ ip +" (binary: "+ ip_bin + ")")
 
-        max_lookup_depth = ceil(len(ip_bin)/(self.stride +1))
+        max_lookup_depth = self.max_lookup_depth(ip_bin)
         next_node = self.root_node
 
         for lookup_depth in range(0,max_lookup_depth):
-            short_ip = ip_bin[lookup_depth*(self.stride +1):(lookup_depth+1)*(self.stride +1)]
-            print(short_ip)
+            short_ip = ip_bin[lookup_depth*(self.stride +1):(lookup_depth+1)*(
+                self.stride +1)]
 
             child_pointer = self.lookup_child(next_node, short_ip)
-
             internal_pointer = self.lookup_internal(next_node, short_ip)
+
             if internal_pointer is not None:
-                print ("found result in "+ str(internal_pointer))
+                print ("Found result in "+ str(internal_pointer))
                 result = internal_pointer
 
             if child_pointer is not None:
-                print ("found child in "+ str(child_pointer))
+                print ("Found child in "+ str(child_pointer))
                 next_node = self.root_node.children[child_pointer]
             else:
                 break
 
         result = self.root_node.results[result]
-        print ("Search ended with result: "+ result)
+        print ("\n\nSearch ended!\nResult: "+ result)
         return result
 
+    def max_lookup_depth(self,ip_bin):
+        """Returns the maximum number of node levels may need to be
+        visited.
+
+        One node with stide x has the correspondent to x+1 levels of
+        binary tree nodes.
+        """
+        return ceil(len(ip_bin)/(self.stride +1))
+
+
     def lookup_child(self, node, ip):
+        """Search for an exact match in the child bitmap"""
         position = int(ip, 2)
         if node.child_bitmap[position]:
             return node.child_idx + node.number_of_ones(CHILDREN, position)
@@ -246,13 +266,31 @@ class BitmapTree:
             return None
 
     def lookup_internal(self, node, ip):
+        """Does a loop in the internal bitmap until a result is found or
+        all possible nodes have been searched.
+
+        The ip is decreased in one bit in each loop so the longest match
+        is the one found first.
+        """
         while True:
             ip = ip[:(len(ip)-1)]
-            position = int (pow(2, len(ip)) - 1 + int(ip, 2))
+            position = self.ip_to_internal_bitmap_position(ip)
             if node.internal_bitmap[position]:
-                return node.internal_idx + node.number_of_ones(INTERNAL, position)
+                return node.internal_idx + node.number_of_ones(INTERNAL, 
+                    position)
             if len(ip) == 0:
                 return None
+
+    @staticmethod
+    def ip_to_internal_bitmap_position(ip):
+        """Returns the position on the internal bitmap based on the ip.
+
+        The power of the number of bits gives the number of nodes in the
+        current level of the correspondent binary tree. This -1 gives
+        the number of nodes in the levels before.
+        Then we just add the number to get the correct node.
+        """
+        return int (pow(2, len(ip)) - 1 + int(ip, 2))
 
 
 
