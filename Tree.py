@@ -1,5 +1,5 @@
 from node import Node, RootNode
-from math import pow
+from math import pow, ceil
 
 #SWITCH LIST
 IP     = 0
@@ -209,6 +209,53 @@ class BitmapTree:
         for result in self.root_node.results:
             print("["+str(i)+"] "+result)
             i+=1  
+
+    def ip_lookup(self, ip):
+        ip_bin = self.ip_to_bin(ip)
+        print("\n\nLookup of IP "+ ip +" (binary: "+ ip_bin + ")")
+
+        max_lookup_depth = ceil(len(ip_bin)/(self.stride +1))
+        next_node = self.root_node
+
+        for lookup_depth in range(0,max_lookup_depth):
+            short_ip = ip_bin[lookup_depth*(self.stride +1):(lookup_depth+1)*(self.stride +1)]
+            print(short_ip)
+
+            child_pointer = self.lookup_child(next_node, short_ip)
+
+            internal_pointer = self.lookup_internal(next_node, short_ip)
+            if internal_pointer is not None:
+                print ("found result in "+ str(internal_pointer))
+                result = internal_pointer
+
+            if child_pointer is not None:
+                print ("found child in "+ str(child_pointer))
+                next_node = self.root_node.children[child_pointer]
+            else:
+                break
+
+        result = self.root_node.results[result]
+        print ("Search ended with result: "+ result)
+        return result
+
+    def lookup_child(self, node, ip):
+        position = int(ip, 2)
+        if node.child_bitmap[position]:
+            return node.child_idx + node.number_of_ones(CHILDREN, position)
+        else: 
+            return None
+
+    def lookup_internal(self, node, ip):
+        while True:
+            ip = ip[:(len(ip)-1)]
+            position = int (pow(2, len(ip)) - 1 + int(ip, 2))
+            if node.internal_bitmap[position]:
+                return node.internal_idx + node.number_of_ones(INTERNAL, position)
+            if len(ip) == 0:
+                return None
+
+
+
         
         
 #Example used in the first meating
@@ -233,3 +280,5 @@ switch_list["134.160.0.254"] = ["134.160.0.254","7","00:00:00:11:11:04","s9","9"
 
 tree = BitmapTree(switch_list, 2)
 tree.print_tree()
+
+tree.ip_lookup("236.128.0.0")

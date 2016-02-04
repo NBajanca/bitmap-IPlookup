@@ -78,7 +78,7 @@ class Node:
             for i in range(0, position - 1):
                 if (self.internal_bitmap[i] == 1):
                     number_of_ones +=1
-        elif (bitmap_id == CHILD):
+        elif (bitmap_id == CHILDREN):
             for i in range(0, position - 1):
                 if (self.child_bitmap[i] == 1):
                     number_of_ones +=1
