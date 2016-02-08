@@ -2,12 +2,12 @@
 ## Switch and Routing - [Politecnico di Milano](http://www.polimi.it/ "Polimi Website") (2015/2016 1st Semester)
 
 #### Steps to deploy virtual network with RYU Controler on Switches
-1. Start the mininet
+##### Start the mininet
 ```
 cd (topology and configuration files directory)
 sudo mn --custom (topology-file).py --topo mytopo --mac --controller remote --pre (configuration file)
 ```
-2. Start the controller
+##### Start the controller
 ```
 cd (ryu directory)
 PYTHONPATH=. ./bin/ryu-manager ryu/app/(controler_file).py
