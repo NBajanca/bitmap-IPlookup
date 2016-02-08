@@ -83,18 +83,6 @@ class Node:
                 if (self.child_bitmap[i] == 1):
                     number_of_ones +=1
         return number_of_ones
-
-
-    def print_node (self):
-        """Prints the node: The idxs and the bitmaps"""
-        print ("["+str(self.internal_idx)+"]", end=" ")
-        for i in self.internal_bitmap:
-            print (str(i)+"|", end="")
-        print ("")
-        print ("["+str(self.child_idx)+"]", end=" ")
-        for i in self.child_bitmap:
-            print (str(i)+"|", end="")
-        print ("")
         
 
 class RootNode(Node):
@@ -105,7 +93,7 @@ class RootNode(Node):
 
     def __init__(self, stride):
         """Constructor of the class, initializes the variables"""
-        super(RootNode, self).__init__(stride = stride)
+        Node.__init__(self, stride = stride)
         results = []
         children = []
 

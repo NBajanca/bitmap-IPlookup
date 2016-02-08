@@ -35,9 +35,9 @@ class BitmapTree:
         print("-- Creating Switches Network Array (Prefix Table)")
         switches_network = {}
         for switch in switch_list:
-            prefix = self.ip_to_prefix(switch, 
+            prefix = self.ip_to_prefix(switch_list[switch][IP], 
             int(switch_list[switch][SUBNET]))
-            self.add_prefix_to_table(prefix, switch_list[switch][DPID])
+            self.add_prefix_to_table(prefix, switch)
         for ip,id2 in sorted(self.switches_network.items(), 
             key=lambda x:x[1]):
             print("--- ["+ id2 +"] : "+ ip)
@@ -196,21 +196,6 @@ class BitmapTree:
             return "".join("0" for x in range (last_idx + 2))
 
 
-    def print_tree(self):
-        """Prints the tree """
-        print("\n\nPRINTING TREE\n--ROOT NODE")
-        self.root_node.print_node()
-        i=0
-        for node in self.root_node.children:
-            print("\n--NODE "+str(i + 1))
-            node.print_node()
-            i+=1
-        print("\n\n--RESULTS")
-        i=0
-        for result in self.root_node.results:
-            print("["+str(i)+"] "+result)
-            i+=1  
-
     def ip_lookup(self, ip):
         """Method respondible for the ip_lookup. Receives an ip and goes
         to the tree until the end, finding the longest prefix match.
@@ -254,7 +239,7 @@ class BitmapTree:
         One node with stide x has the correspondent to x+1 levels of
         binary tree nodes.
         """
-        return ceil(len(ip_bin)/(self.stride +1))
+        return int(ceil(len(ip_bin)/(self.stride +1)))
 
 
     def lookup_child(self, node, ip):
@@ -274,7 +259,10 @@ class BitmapTree:
         """
         while True:
             ip = ip[:(len(ip)-1)]
-            position = self.ip_to_internal_bitmap_position(ip)
+            if ip == '':
+                position = 0
+            else:
+                position = self.ip_to_internal_bitmap_position(ip)
             if node.internal_bitmap[position]:
                 return node.internal_idx + node.number_of_ones(INTERNAL, 
                     position)
@@ -293,30 +281,3 @@ class BitmapTree:
         return int (pow(2, len(ip)) - 1 + int(ip, 2))
 
 
-
-        
-        
-#Example used in the first meating
-#switch_list = {}
-#switch_list["195.0.0.254"  ] = ["195.0.0.254","8" ,"00:00:00:11:11:01","s1","1"] 
-#switch_list["128.128.0.254"] = ["128.128.0.254","8","00:00:00:11:11:02","s2","2"] 
-#switch_list["154.128.0.254"] = ["154.128.0.254","8","00:00:00:11:11:03","s3","3"] 
-#switch_list["197.160.0.254"] = ["197.160.0.254","8","00:00:00:11:11:04","s4","4"]
-
-#Example used in the slides
-switch_list = {}
-switch_list["0.0.0.254"  ] = ["0.0.0.254","0" ,"00:00:00:11:11:01","s1","1"] 
-switch_list["128.128.0.254"] = ["128.128.0.254","1","00:00:00:11:11:02","s2","2"] 
-switch_list["0.128.0.254"] = ["0.128.0.254","2","00:00:00:11:11:03","s3","3"] 
-switch_list["160.160.0.254"] = ["160.160.0.254","3","00:00:00:11:11:04","s4","4"]
-switch_list["224.0.0.254"  ] = ["224.0.0.254","3" ,"00:00:00:11:11:01","s5","5"] 
-switch_list["128.128.0.253"] = ["128.128.0.254","4","00:00:00:11:11:02","s6","6"] 
-switch_list["232.128.0.254"] = ["232.128.0.254","5","00:00:00:11:11:03","s7","7"] 
-switch_list["228.160.0.254"] = ["228.160.0.254","6","00:00:00:11:11:04","s8","8"]
-switch_list["134.160.0.254"] = ["134.160.0.254","7","00:00:00:11:11:04","s9","9"]
-
-
-tree = BitmapTree(switch_list, 2)
-tree.print_tree()
-
-tree.ip_lookup("236.128.0.0")
