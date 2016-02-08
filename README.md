@@ -22,7 +22,7 @@ Note: The files related to the bitmap algorithm must be in the same directory as
 
 #### Group 4
 * Nuno Bajanca (@NBajanca)
-* Vladimir Tomov
+* Vladimir Tomov (@vtomov92)
 * Konstantin Tsolev (@KTsolev)
 * Francisco Santos (@franciscof93)
 * Alim Mohamed (@oxnitrogen)
