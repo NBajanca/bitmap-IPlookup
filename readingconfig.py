@@ -103,14 +103,18 @@ class ReadingFromFile:
                 
         print("zzzzzzzzzzzzzzzzzz")
         print (mac_to_port)
+        self.mac_to_port = mac_to_port
         print("zzzzzzzzzzzzzzzzzz")
         print (switch)
+        self.switch = switch
         print("zzzzzzzzzzzzzzzzzz")
         print (switch_ip)
+        self.switch_ip = switch_ip
         print("zzzzzzzzzzzzzzzzzz")
         print (ip_to_mac)
+        self.ip_to_mac = ip_to_mac
         print ("asfasdfsdf")      
-     	#fr.close() 
+     	#fr.close()
 
 a = ReadingFromFile()
     
