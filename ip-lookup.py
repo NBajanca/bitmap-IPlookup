@@ -18,6 +18,9 @@ from ryu.lib.packet import udp
 from ryu.lib.packet import ether_types
 from ryu.ofproto import ether
 from ryu.app.ofctl.api import get_datapath
+
+import sys
+import time
 from tree import BitmapTree
 
 
@@ -34,6 +37,9 @@ from tree import BitmapTree
 #
 # get ip-to-mac
 # GET /v1.0/lookup/ip-to-mac
+#
+# get timers
+# GET /v1.0/lookup/timers
 
 IP     = 0
 SUBNET = 1
@@ -84,12 +90,27 @@ class SimpleSwitch(app_manager.RyuApp):
 
         #self.switch_ip = self.get_switch_ip()
         self.switch_ip = {}
-        self.switch_ip["195.0.0.254"  ] = ["1"] 
+        self.switch_ip["195.0.0.254"  ] = ["1"]  
         self.switch_ip["128.128.0.254"] = ["2"] 
         self.switch_ip["154.128.0.254"] = ["3"] 
         self.switch_ip["197.160.0.254"] = ["4"]
 
-        self.tree = BitmapTree(self.switch, 2)
+        self.tree = BitmapTree(self.switch, 3)
+
+        """
+        #Code to print the tree
+        i = 0
+        for child in self.tree.root_node.children:
+            print ("["+str(i)+"]:")
+            sys.stdout.write("internal [" + str(child.internal_idx) + "]: ")
+            for bit in child.internal_bitmap:
+                sys.stdout.write(str(bit))
+            sys.stdout.write("\nchildren [" + str(child.child_idx) + "]: ")
+            for bit in child.child_bitmap:
+                sys.stdout.write(str(bit))
+            print("\n")
+            i +=1
+        """
 
         #We can get from mininet, but it's hard
         self.ip_to_mac = {}
@@ -101,6 +122,11 @@ class SimpleSwitch(app_manager.RyuApp):
         self.ip_to_mac["154.128.0.2"] = "00:00:00:00:00:06"
         self.ip_to_mac["197.160.0.1"] = "00:00:00:00:00:07"
         self.ip_to_mac["197.160.0.2"] = "00:00:00:00:00:08"
+
+        self.timer = {}
+        self.timer["lookup"] = []
+        self.timer["processing"] = []
+        self.timer["lookup_percentage"] = []
 
     def send_arp_reply(self, datapath, srcMac, srcIp, dstMac, dstIp, outPort):
         e = ethernet.ethernet(dstMac, srcMac, ether.ETH_TYPE_ARP)
@@ -124,6 +150,9 @@ class SimpleSwitch(app_manager.RyuApp):
     # Register PACKET HANDLER
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
+        #Starting time
+        start_time_processing = time.time()
+
         msg = ev.msg                          # OpenFlow event message
         datapath = msg.datapath               # Switch class that received the packet   
         ofproto = datapath.ofproto            # OpenFlow protocol class  
@@ -179,33 +208,41 @@ class SimpleSwitch(app_manager.RyuApp):
             src_ip = ip4_pkt.src
             dst_ip = ip4_pkt.dst
             self.logger.info("  --- src_ip[%s], dst_ip[%s]" % (src_ip,dst_ip))
-            if dst_ip in self.lookup:
-                sw = self.tree.ip_lookup(dst_ip)
-                #sw = self.lookup[dst_ip]
-                self.logger.info("  --- Destination present on switch %s" % (self.switch[sw]))
-                #dp = get_datapath(self,int(self.switch[sw][DPID]))
-                dp = get_datapath(self,int(sw))
+            
+            #Starting lookup algorithm
+            start_time_lookup = time.time()
+            sw = self.tree.ip_lookup(dst_ip)
+            elapsed_time_lookup = time.time() - start_time_lookup
+            self.logger.info("  --- Destination present on switch %s" % (self.switch[sw]))
+            dp = get_datapath(self,int(sw))
 
-                #out_port = self.mac_to_port[self.switch[sw][DPID]][self.ip_to_mac[dst_ip]]
-                out_port = self.mac_to_port[sw][self.ip_to_mac[dst_ip]]  
-                self.logger.info("  --- Output port set to %s" % (out_port))
+            out_port = self.mac_to_port[sw][self.ip_to_mac[dst_ip]]  
+            self.logger.info("  --- Output port set to %s" % (out_port))
 
-                actions = [dp.ofproto_parser.OFPActionOutput(int(out_port))]
+            actions = [dp.ofproto_parser.OFPActionOutput(int(out_port))]
 
-                data = msg.data
-                pkt = packet.Packet(data)
-                eth = pkt.get_protocol(ethernet.ethernet)
-                #change the mac address of packet
-                eth.dst = self.ip_to_mac[dst_ip] 
-                self.logger.info("  --- Changing destination mac to %s" % (eth.dst))
+            data = msg.data
+            pkt = packet.Packet(data)
+            eth = pkt.get_protocol(ethernet.ethernet)
+            #change the mac address of packet
+            eth.dst = self.ip_to_mac[dst_ip] 
+            self.logger.info("  --- Changing destination mac to %s" % (eth.dst))
 
-                pkt.serialize()
-                out = dp.ofproto_parser.OFPPacketOut(
-                    datapath=dp, buffer_id=0xffffffff, in_port=datapath.ofproto.OFPP_CONTROLLER,
-                    actions=actions, data=pkt.data)
-                print("---------")
-                dp.send_msg(out)
-                return
+            pkt.serialize()
+            out = dp.ofproto_parser.OFPPacketOut(
+                datapath=dp, buffer_id=0xffffffff, in_port=datapath.ofproto.OFPP_CONTROLLER,
+                actions=actions, data=pkt.data)
+            print("---------")
+            dp.send_msg(out)
+
+            #Stop time
+            elapsed_time_processing = time.time() - start_time_processing
+
+            #Process timers
+            self.timer["lookup"].append(elapsed_time_lookup)
+            self.timer["processing"].append(elapsed_time_processing)
+            self.timer["lookup_percentage"].append(elapsed_time_lookup/elapsed_time_processing)
+            return
 
 
 
@@ -258,6 +295,7 @@ class LookupController(ControllerBase):
         body = json.dumps(bridge_table, sort_keys=True)
         return Response(content_type='application/json', body=body)
 
+
     @route('lookup', '/v1.0/lookup/ip-to-mac',
            methods=['GET'])
     def list_ip_to_mac_table(self, req, **kwargs):
@@ -266,3 +304,22 @@ class LookupController(ControllerBase):
         return Response(content_type='application/json', body=body)
 
 
+    @route('lookup', '/v1.0/lookup/timers',
+           methods=['GET'])
+    def list_ip_to_mac_table(self, req, **kwargs):
+        elapsed_time_table = self.lookup_api_app.timer
+
+        if len(elapsed_time_table["lookup"]):
+            elapsed_time_table["average_lookup"] = sum(elapsed_time_table["lookup"])/float(len(elapsed_time_table["lookup"]))
+            elapsed_time_table["average_lookup"] = elapsed_time_table["average_lookup"] * 1000
+
+        if len(elapsed_time_table["processing"]):
+            elapsed_time_table["average_processing"] = sum(elapsed_time_table["processing"])/float(len(elapsed_time_table["processing"]))
+            elapsed_time_table["average_processing"] = elapsed_time_table["average_processing"] * 1000
+
+        if len(elapsed_time_table["lookup_percentage"]):
+            elapsed_time_table["average_lookup_percentage"] = sum(elapsed_time_table["lookup_percentage"])/float(len(elapsed_time_table["lookup_percentage"]))
+            elapsed_time_table["average_lookup_percentage"] = elapsed_time_table["average_lookup_percentage"] * 100
+
+        body = json.dumps(elapsed_time_table, sort_keys=True)
+        return Response(content_type='application/json', body=body)
