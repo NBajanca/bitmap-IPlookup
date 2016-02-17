@@ -75,11 +75,11 @@ class Node:
         """
         number_of_ones = 0
         if (bitmap_id == INTERNAL):
-            for i in range(0, position - 1):
+            for i in range(0, position):
                 if (self.internal_bitmap[i] == 1):
                     number_of_ones +=1
         elif (bitmap_id == CHILDREN):
-            for i in range(0, position - 1):
+            for i in range(0, position):
                 if (self.child_bitmap[i] == 1):
                     number_of_ones +=1
         return number_of_ones
