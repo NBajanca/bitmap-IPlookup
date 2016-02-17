@@ -115,6 +115,5 @@ class ReadingFromFile:
 
         fr.close()
 
-a = ReadingFromFile('config')
     
             
