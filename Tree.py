@@ -16,7 +16,7 @@ CHILDREN = 1
 
 class BitmapTree:
     """Bitmap Tree Class, enables ip-lookup for Ryu Openflow controler"""
-    stride = ""
+    stride = 2
     switches_network = {}
     root_node = ""
 
@@ -38,10 +38,12 @@ class BitmapTree:
             prefix = self.ip_to_prefix(switch_list[switch][IP], 
             int(switch_list[switch][SUBNET]))
             self.add_prefix_to_table(prefix, switch)
+
+        print("Prefix Table:")
         for ip,id2 in sorted(self.switches_network.items(), 
             key=lambda x:x[1]):
             print("--- ["+ id2 +"] : "+ ip)
-        print("-- Finished Switches Network Array\n")
+        print("\n-- Finished Switches Network Array\n")
 
     
     def ip_to_prefix(self, ip, subnet):
@@ -57,7 +59,7 @@ class BitmapTree:
 
     def ip_bin_and_subnet_to_prefix(self, ip, subnet):
         """Cuts the IP to a prefix according to a subnet"""
-        return ip[:int(subnet)]
+        return ip[:subnet]
 
 
     def add_prefix_to_table(self, prefix, dpid):
@@ -172,7 +174,7 @@ class BitmapTree:
             if network.startswith(ip):
                 print("----- Adding Child")
                 print("------ ["+ str(position) +"] : "+ ip)
-                return node.add_child (position, self.root_node, self.stride)
+                return node.add_child (position, self.root_node)
 
 
     def next_ip(self, actual_ip):

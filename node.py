@@ -5,8 +5,8 @@ CHILDREN = 1
 
 class Node:
     """Class for a node in a bitmap binary tree """
-    internal_idx = ""
-    child_idx = ""
+    internal_idx = 0
+    child_idx = 0
     internal_bitmap = []
     child_bitmap = []
 
@@ -22,7 +22,7 @@ class Node:
         self.initialize_bitmap(stride)
 
 
-    def initialize_bitmap(self, stride = 2):
+    def initialize_bitmap(self, stride):
         """Initializes bitmaps to zero"""
         self.internal_bitmap = []
         self.child_bitmap = []
@@ -60,13 +60,13 @@ class Node:
         self.internal_idx = len(root_node.results)
 
 
-    def add_child(self, position, root_node, stride):
+    def add_child(self, position, root_node):
         """Changes to 1 the @position of the @child_bitmap and calls 
         the method @add_child_node of @root_node to create a new 
         @child_node
         """
         self.child_bitmap[position] = 1
-        return root_node.add_child_node(stride)
+        return root_node.add_child_node()
     
 
     def number_of_ones(self, bitmap_id, position):
@@ -89,13 +89,13 @@ class RootNode(Node):
     """class for the root_node in a bitmap binary tree (extends Node)"""
     results = []
     children = []
+    stride = 2
 
 
-    def __init__(self, stride):
+    def __init__(self, stride = 2):
         """Constructor of the class, initializes the variables"""
         Node.__init__(self, stride = stride)
-        results = []
-        children = []
+        self.stride = stride
 
 
     def add_result_info(self, result):
@@ -103,11 +103,11 @@ class RootNode(Node):
         self.results.append(result)
 
 
-    def add_child_node(self, stride):
+    def add_child_node(self):
         """Creates a new node, with the current array sizes as idxs and 
         puts it in the @self.children array
         """
-        child = Node(stride = stride)
+        child = Node(stride = self.stride)
         self.children.append(child)
         return child
 
