@@ -4,15 +4,18 @@
 #### Steps to deploy virtual network with RYU Controler on Switches
 ##### Start the mininet
 ```
-cd (topology and configuration files directory)
-sudo mn --custom (topology-file).py --topo mytopo --mac --controller remote --pre (configuration file)
+sudo mn --custom (path to topology-file).py --topo mytopo --mac --controller remote --pre (path to configuration file)
 ```
 ##### Start the controller
+Requires for the config, tree, node and controler file to be in the app directory of Ryu
 ```
 cd (ryu directory)
 PYTHONPATH=. ./bin/ryu-manager ryu/app/(controler_file).py
 ```
 Note: The files related to the bitmap algorithm must be in the same directory as the controller file
+
+### Report
+(Loading...) https://goo.gl/I05bR4
 
 #### Important Links
 * [Switch and Routing](https://www11.ceda.polimi.it/schedaincarico/schedaincarico/controller/scheda_pubblica/SchedaPublic.do?&evn_default=evento&c_classe=617586&__pj0=0&__pj1=cafee3a3315408a73e29ad42bdc45521 "Course Page")
