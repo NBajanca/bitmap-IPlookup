@@ -22,6 +22,7 @@ from ryu.app.ofctl.api import get_datapath
 import sys
 import time
 from tree import BitmapTree
+from readingconfig import ReadingFromFile
 
 
 # REST API for switch configuration
@@ -51,7 +52,7 @@ DPID   = 4
 class SimpleSwitch(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
     _CONTEXTS = {
-        'wsgi': WSGIApplication
+        'wsgi': WSGIApplication 
     }
 
     # Initialize the application 
@@ -61,39 +62,11 @@ class SimpleSwitch(app_manager.RyuApp):
         wsgi.register(LookupController, {'lookup_api_app': self})
 
         # Add all initialization code here
-
-        #We can get from mininet, but it's hard
-        self.mac_to_port = {} 
-        self.mac_to_port["1"] = {}
-        self.mac_to_port["2"] = {}
-        self.mac_to_port["3"] = {}
-        self.mac_to_port["4"] = {}
-
-        #We can get from mininet, but it's hard
-        self.mac_to_port["1"]["00:00:00:00:00:01"] = 1
-        self.mac_to_port["1"]["00:00:00:00:00:02"] = 2
-        self.mac_to_port["2"]["00:00:00:00:00:03"] = 1
-        self.mac_to_port["2"]["00:00:00:00:00:04"] = 2
-        self.mac_to_port["3"]["00:00:00:00:00:05"] = 1
-        self.mac_to_port["3"]["00:00:00:00:00:06"] = 2
-        self.mac_to_port["4"]["00:00:00:00:00:07"] = 1
-        self.mac_to_port["4"]["00:00:00:00:00:08"] = 2
-
-
-        #Get from file (the MAC addresses are defined by us)
-        self.switch = {}
-        self.switch["1"] = ["195.0.0.254","8" ,"00:00:00:11:11:01","s1","1"] 
-        self.switch["2"] = ["128.128.0.254","12","00:00:00:11:11:02","s2","2"] 
-        self.switch["3"] = ["154.128.0.254","16","00:00:00:11:11:03","s3","3"] 
-        self.switch["4"] = ["197.160.0.254","24","00:00:00:11:11:04","s4","4"] 
-
-
-        #self.switch_ip = self.get_switch_ip()
-        self.switch_ip = {}
-        self.switch_ip["195.0.0.254"  ] = ["1"]  
-        self.switch_ip["128.128.0.254"] = ["2"] 
-        self.switch_ip["154.128.0.254"] = ["3"] 
-        self.switch_ip["197.160.0.254"] = ["4"]
+        config_file_info = ReadingFromFile("/home/user/Downloads/ryu/ryu/app/config")
+        self.mac_to_port = config_file_info.mac_to_port
+        self.switch = config_file_info.switch
+        self.switch_ip = config_file_info.switch_ip
+        self.ip_to_mac = config_file_info.ip_to_mac
 
         self.tree = BitmapTree(self.switch, 3)
 
@@ -111,18 +84,6 @@ class SimpleSwitch(app_manager.RyuApp):
             print("\n")
             i +=1
         """
-
-        #We can get from mininet, but it's hard
-        self.ip_to_mac = {}
-        self.ip_to_mac["195.0.0.1"]   = "00:00:00:00:00:01"
-        self.ip_to_mac["195.0.0.2"]   = "00:00:00:00:00:02"
-        self.ip_to_mac["128.128.0.1"] = "00:00:00:00:00:03"
-        self.ip_to_mac["128.128.0.2"] = "00:00:00:00:00:04"
-        self.ip_to_mac["154.128.0.1"] = "00:00:00:00:00:05"
-        self.ip_to_mac["154.128.0.2"] = "00:00:00:00:00:06"
-        self.ip_to_mac["197.160.0.1"] = "00:00:00:00:00:07"
-        self.ip_to_mac["197.160.0.2"] = "00:00:00:00:00:08"
-
         self.timer = {}
         self.timer["lookup"] = []
         self.timer["processing"] = []
