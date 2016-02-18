@@ -34,13 +34,13 @@ class ReadingFromFile:
 
         if (mode ==INFOIP):
             d = [line_s[0],line_s[3].replace('\n', ''),'']
-            d[0]=d[0][1:]
+            d[0]=int(d[0][1:])
             val_s = d[1].split('/')
             d[1]=val_s[0]
             d[2]=val_s[1]
         elif (mode==INFOGTAWAY):
             d = [line_s[0],line_s[5].replace('\n', '')]
-            d[0]=d[0][1:]
+            d[0]=int(d[0][1:])
         else:
             d = line_s[1]
 
@@ -115,5 +115,6 @@ class ReadingFromFile:
 
         fr.close()
 
+a = ReadingFromFile('config12')
     
             
