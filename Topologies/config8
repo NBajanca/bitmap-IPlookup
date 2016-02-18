@@ -1,0 +1,74 @@
+py "--------------------------------------------------------"
+py "Configuring network"
+py "--------------------------------------------------------"
+py "Assign IP address to hosts"
+h1 ifconfig h1-eth0 195.0.0.1/8
+h2 ifconfig h2-eth0 195.0.0.2/8
+h3 ifconfig h3-eth0 195.0.0.3/8
+h4 ifconfig h4-eth0 195.0.0.4/8
+h5 ifconfig h5-eth0 192.168.0.1/24
+h6 ifconfig h6-eth0 192.168.0.2/24
+h7 ifconfig h7-eth0 192.168.0.3/24
+h8 ifconfig h8-eth0 192.168.0.4/24
+h9 ifconfig h9-eth0 154.128.0.1/16
+h10 ifconfig h10-eth0 154.128.0.2/16
+h11 ifconfig h11-eth0 154.128.0.3/16
+h12 ifconfig h12-eth0 154.128.0.4/16
+h13 ifconfig h13-eth0 197.160.0.1/24
+h14 ifconfig h14-eth0 197.160.0.2/24
+h15 ifconfig h15-eth0 197.160.0.3/24
+h16 ifconfig h16-eth0 197.160.0.4/24
+
+h17 ifconfig h17-eth0 170.0.0.1/8
+h18 ifconfig h18-eth0 170.0.0.2/8
+h19 ifconfig h19-eth0 170.0.0.3/8
+h20 ifconfig h20-eth0 170.0.0.4/8
+h21 ifconfig h21-eth0 160.110.0.1/24
+h22 ifconfig h22-eth0 160.110.0.2/24
+h23 ifconfig h23-eth0 160.110.0.3/24
+h24 ifconfig h24-eth0 160.110.0.4/24
+h25 ifconfig h25-eth0 130.128.0.1/16
+h26 ifconfig h26-eth0 130.128.0.2/16
+h27 ifconfig h27-eth0 130.128.0.3/16
+h28 ifconfig h28-eth0 130.128.0.4/16
+h29 ifconfig h29-eth0 110.10.0.1/24
+h30 ifconfig h30-eth0 110.10.0.2/24
+h31 ifconfig h31-eth0 110.10.0.3/24
+h32 ifconfig h32-eth0 110.10.0.4/24
+
+
+
+h1 route add default gw 195.0.0.254
+h2 route add default gw 195.0.0.254
+h3 route add default gw 195.0.0.254
+h4 route add default gw 195.0.0.254
+h5 route add default gw 192.168.0.254
+h6 route add default gw 192.168.0.254
+h7 route add default gw 192.168.0.254
+h8 route add default gw 192.168.0.254
+h9 route add default gw 154.128.0.254
+h10 route add default gw 154.128.0.254
+h11 route add default gw 154.128.0.254
+h12 route add default gw 154.128.0.254
+h13 route add default gw 197.160.0.254
+h14 route add default gw 197.160.0.254
+h15 route add default gw 197.160.0.254
+h16 route add default gw 197.160.0.254
+
+
+h17 route add default gw 170.0.0.254
+h18 route add default gw 170.0.0.254
+h19 route add default gw 170.0.0.254
+h20 route add default gw 170.0.0.254
+h21 route add default gw 160.110.0.254
+h22 route add default gw 160.110.0.254
+h23 route add default gw 160.110.0.254
+h24 route add default gw 160.110.0.254
+h25 route add default gw 130.128.0.254
+h26 route add default gw 130.128.0.254
+h27 route add default gw 130.128.0.254
+h28 route add default gw 130.128.0.254
+h29 route add default gw 110.10.0.254
+h30 route add default gw 110.10.0.254
+h31 route add default gw 110.10.0.254
+h32 route add default gw 110.10.0.254
