@@ -2,6 +2,22 @@
 INTERNAL = 0
 CHILDREN = 1
 
+class BinaryNode():
+    """Class for a node in a binary trie """
+    left_child = None
+    right_child = None
+    parent_node = None
+    result = None
+
+    def __init__(self, parent_node, left_child = None, right_child = None, 
+        result = None):
+        """Constructor of the class, initializes the variables"""
+        self.parent_node = parent_node
+        self.left_child = left_child
+        self.right_child = right_child
+        self.result = result
+        
+        
 
 class Node:
     """Class for a node in a bitmap binary tree """

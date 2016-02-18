@@ -1,4 +1,4 @@
-from node import Node, RootNode
+from node import Node, RootNode, BinaryNode
 from math import pow, ceil
 
 #SWITCH LIST
@@ -13,20 +13,18 @@ INTERNAL = 0
 CHILDREN = 1
 
 
-
-class BitmapTree:
-    """Bitmap Tree Class, enables ip-lookup for Ryu Openflow controler"""
-    stride = 2
+class BinaryTrie:
+    """Binary Tree Class, enables ip-lookup for Ryu Openflow
+    controller
+    """
     switches_network = {}
-    root_node = ""
+    root_node = None
 
-
-    def __init__(self, switch_list, stride = 2):
+    def __init__(self, switch_list):
         """Constructor of the class, calls method to build the tree"""
-        self.stride = stride
         self.switch_list_to_switches_network(switch_list)
-        print("-- Building Bitmap Tree (stride = "+ str(self.stride)
-            + ") with " + str(len(switch_list)) +" Switches")
+        print("-- Building Binary Trie (" + str(len(switch_list)) + 
+            " Switches")
         self.build_tree()
 
 
@@ -45,7 +43,6 @@ class BitmapTree:
             print("--- ["+ id2 +"] : "+ ip)
         print("\n-- Finished Switches Network Array\n")
 
-    
     def ip_to_prefix(self, ip, subnet):
         "From ip to binary prefix"
         ip_bin = self.ip_to_bin(ip)
@@ -64,6 +61,137 @@ class BitmapTree:
 
     def add_prefix_to_table(self, prefix, dpid):
         self.switches_network[prefix] = dpid
+
+    def build_tree(self):
+        """Creates the binary trie. 
+
+        Starts by creating the root_node and then enters a recursive 
+        algorithm to build the complete tree
+
+        """
+        print("--- Creating Root Node")
+        self.root_node = BinaryNode(None)
+        self.create_node(self.root_node)
+        print("-- Bitmap Tree Built with Success")
+
+    def create_node(self, node, ip = ""):
+        """Creates the node, while creating children the method becomes 
+        recursive.
+        """
+        print("--- Building Node (" + ip +")")
+        self.check_for_results(node, ip)
+        self.check_for_children(node, ip)
+
+    def check_for_results(self, node, ip):
+        """Looks in the @self.switches_network for a match with the ip 
+        represented by the @node.
+        """
+        if (ip in self.switches_network):
+                self.add_result(ip, node)
+
+
+    def add_result(self, ip, node):
+        """Adds a result to the node"""
+        print("----- Adding Result")
+        result = self.retrieve_and_delete_result_from_switches_network(ip)
+        node.result = result
+    
+
+    def retrieve_and_delete_result_from_switches_network(self, ip):
+        """retrives result from the switches_network list and deletes 
+        the it from the same list
+        """
+        result = self.switches_network[ip]
+        del self.switches_network[ip]
+        return result
+
+
+    def check_for_children(self, node, ip):
+        """Goes trough the 2 ips possible for children of this node 
+        and calls a method to check if there is in fact a child for 
+        that ip, creating an object if there is.
+        """
+        left_node = self.check_for_child(node, ip + "0")
+        if left_node:
+            node.left_child = left_node
+            self.create_node(left_node, ip + "0")
+
+        right_node = self.check_for_child(node, ip + "1")
+        if right_node:
+            node.right_child = right_node
+            self.create_node(right_node, ip + "1")
+
+
+
+    def check_for_child(self,node,ip):
+        """Looks in the @self.switches_network for a partial match with 
+        the ips represented by the @node.
+        
+        If there is a partial match it means that this node is a father 
+        of the node representing that prefix. A node is created and the 
+        algorithm continues in the new node (recursive)
+        """
+        for network in self.switches_network:
+            if network.startswith(ip):
+                print("----- Adding Child")
+                return BinaryNode(node)
+
+
+    def ip_lookup(self, ip):
+        """Method respondible for the ip_lookup. Receives an ip and goes
+        to the tree until the end, finding the longest prefix match.
+
+        Does two loops:
+        1. Ip-lookup loop: consist in going through every node until
+        reaching the longest prefix match
+        2.Backtrack loop: Does backtracking until finding a result
+
+        """
+        ip_bin = self.ip_to_bin(ip)
+        print("\n\nLookup of IP "+ ip +" (binary: "+ ip_bin + ")")
+
+        next_node = self.root_node
+        i = 0
+        max_i = len(ip_bin)
+
+        while True:
+            if (ip_bin[i] == "0"):
+                if next_node.left_child:
+                    next_node = next_node.left_child
+                else:
+                    break
+            elif (ip_bin[i] == "1"):
+                if next_node.right_child:
+                    next_node = next_node.right_child
+                else:
+                    break
+            elif (i == max_i):
+                break
+
+            i +=1
+
+        while True:
+            if (next_node.result):
+                result = next_node.result
+                break
+            else:
+                next_node = next_node.parent_node
+
+        print ("\n\nSearch ended!\nResult: "+ result)
+        return result
+
+
+class BitmapTree(BinaryTrie):
+    """Bitmap Tree Class, enables ip-lookup for Ryu Openflow controler"""
+    stride = 2
+    
+    def __init__(self, switch_list, stride = 2):
+        """Constructor of the class, calls method to build the tree"""
+        self.stride = stride
+        self.switch_list_to_switches_network(switch_list)
+        print("-- Building Bitmap Tree (stride = "+ str(self.stride)
+            + ") with " + str(len(switch_list)) +" Switches")
+        self.build_tree()
 
 
     def build_tree(self):
@@ -117,15 +245,6 @@ class BitmapTree:
         result = self.retrieve_and_delete_result_from_switches_network(ip)
         node.add_result(idx, result, self.root_node)
         print("------ ["+ str(idx) +"] : "+ result)
-    
-
-    def retrieve_and_delete_result_from_switches_network(self, ip):
-        """retrives result from the switches_network list and deletes 
-        the it from the same list
-        """
-        result = self.switches_network[ip]
-        del self.switches_network[ip]
-        return result
 
 
     def check_for_children(self, node, ip):
@@ -281,5 +400,3 @@ class BitmapTree:
         Then we just add the number to get the correct node.
         """
         return int (pow(2, len(ip)) - 1 + int(ip, 2))
-
-
