@@ -4,7 +4,7 @@ INFOIP = 1
 INFOGTAWAY = 2
 
 #Types of stored information
-PREFIX = 0
+IP = 0
 MASK = 1
 GTWY = 2
 
@@ -66,7 +66,7 @@ class ReadingFromFile:
                 if (state == "ifconfig"):
                     line_splitted=self.split_line(line,INFOIP)
                     buffer[line_splitted[0]]= {}
-                    buffer[line_splitted[0]][PREFIX] = line_splitted[1]
+                    buffer[line_splitted[0]][IP] = line_splitted[1]
                     buffer[line_splitted[0]][MASK] = line_splitted[2]	
 				
                 elif (state == "route"):
@@ -82,7 +82,7 @@ class ReadingFromFile:
 
             numb = str(count)
             counter_mac=counter_mac+1
-            self.ip_to_mac[buffer[key][PREFIX]]="00:00:00:00:00:"+str(format(counter_mac,'02x'))
+            self.ip_to_mac[buffer[key][IP]]="00:00:00:00:00:"+str(format(counter_mac,'02x'))
 
 
             if not (any(buffer[key][GTWY] in s for s in visited)):
@@ -115,6 +115,5 @@ class ReadingFromFile:
 
         fr.close()
 
-a = ReadingFromFile('config12')
     
             
