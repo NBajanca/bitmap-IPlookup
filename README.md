@@ -12,10 +12,7 @@ Requires for the config, tree, node and controler file to be in the app director
 cd (ryu directory)
 PYTHONPATH=. ./bin/ryu-manager ryu/app/(controler_file).py
 ```
-Note: The files related to the bitmap algorithm must be in the same directory as the controller file
-
-### Report
-(Loading...) https://goo.gl/I05bR4
+Note: The files related to the algorithm must be in the same directory as the controller file. The configuration file must be named config.
 
 #### Important Links
 * [Switch and Routing](https://www11.ceda.polimi.it/schedaincarico/schedaincarico/controller/scheda_pubblica/SchedaPublic.do?&evn_default=evento&c_classe=617586&__pj0=0&__pj1=cafee3a3315408a73e29ad42bdc45521 "Course Page")
@@ -29,3 +26,7 @@ Note: The files related to the bitmap algorithm must be in the same directory as
 * Konstantin Tsolev (@KTsolev)
 * Francisco Santos (@franciscof93)
 * Alim Mohamed (@oxnitrogen)
+
+#### Professors
+* Guido Maier
+* Navin Kukreja
