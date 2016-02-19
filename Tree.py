@@ -70,7 +70,7 @@ class BinaryTrie:
 
         """
         print("--- Creating Root Node")
-        self.root_node = BinaryNode(None)
+        self.root_node = BinaryNode()
         self.create_node(self.root_node)
         print("-- Bitmap Tree Built with Success")
 
@@ -134,51 +134,51 @@ class BinaryTrie:
         for network in self.switches_network:
             if network.startswith(ip):
                 print("----- Adding Child")
-                return BinaryNode(node)
+                return BinaryNode()
 
 
     def ip_lookup(self, ip):
         """Method respondible for the ip_lookup. Receives an ip and goes
         to the tree until the end, finding the longest prefix match.
 
-        Does two loops:
-        1. Ip-lookup loop: consist in going through every node until
-        reaching the longest prefix match
-        2.Backtrack loop: Does backtracking until finding a result
-
+        To do that it is called a recursive method, to assure that 
+        backtraking is possible 
         """
         ip_bin = self.ip_to_bin(ip)
         print("\n\nLookup of IP "+ ip +" (binary: "+ ip_bin + ")")
 
-        next_node = self.root_node
-        i = 0
-        max_i = len(ip_bin)
-
-        while True:
-            if (ip_bin[i] == "0"):
-                if next_node.left_child:
-                    next_node = next_node.left_child
-                else:
-                    break
-            elif (ip_bin[i] == "1"):
-                if next_node.right_child:
-                    next_node = next_node.right_child
-                else:
-                    break
-            elif (i == max_i):
-                break
-
-            i +=1
-
-        while True:
-            if (next_node.result):
-                result = next_node.result
-                break
-            else:
-                next_node = next_node.parent_node
+        result = self.next_child(self.root_node, ip_bin, 0)
 
         print ("\n\nSearch ended!\nResult: "+ result)
         return result
+
+
+    def next_child(self, node, ip, i):
+        """Recursive method that goes until the last correspondent node
+        of the trie.
+        The i represents the current level of the trie
+
+        The function returns None while there is no matching result and
+        returns the result already obtained after arriving to the
+        longest prefix match
+        """
+        result = None
+        next_node = None
+        if (ip[i] == "0"):
+            if node.left_child:
+                next_node = node.left_child
+        elif (ip[i] == "1"):
+            if node.right_child:
+                next_node = node.right_child
+        
+        if next_node:       
+            result = self.next_child(next_node, ip, i+1)
+
+        if result:
+            return result
+        else:
+            return node.result
+
 
 
 class BitmapTree(BinaryTrie):
