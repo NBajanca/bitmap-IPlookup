@@ -1,0 +1,15 @@
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1}{\ignorespaces SDN Architecture [source: http://networkstatic.net/hp-announces-their-sdn-controller/]\relax }}{2}{figure.2.1}
+\contentsline {figure}{\numberline {2}{\ignorespaces OpenFlow switch network arquitecture [source: http://www.costiser.ro]\relax }}{3}{figure.2.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces OpenFlow flow table\relax }}{4}{figure.2.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Ryu in SDN [source: https://www.sdxcentral.com]\relax }}{5}{figure.2.4}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5}{\ignorespaces UML\relax }}{9}{figure.3.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Fluxogram for the Tree Creation\relax }}{10}{figure.3.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Print screen from controller building the binary trie for the configuration with 16 switches\relax }}{11}{figure.3.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Print screen from controller building the Bitmap Tree for the configuration with 16 switches\relax }}{12}{figure.3.8}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

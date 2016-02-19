@@ -1,0 +1,38 @@
+\begin{titlepage}
+\begin{center}
+
+% Upper part of the page. The '~' is needed because \\
+% only works if a paragraph has started.
+\includegraphics[width=0.3\textwidth]{./LogoIST.jpg}~\\[1cm]
+
+\textsc{\LARGE Instituto Superior Técnico}\\[1cm]
+\textsc{\LARGE Mestrado Integrado em Engenharia Electrotécnica e de
+Computadores}\\[1.5 cm]
+
+
+
+
+\textsc{\Large Gestão de Projectos de Engenharia}\\[1cm]
+
+% Title
+{ \huge \bfseries Projecto de uma Estação de Base num comboio \\[1.5cm] }
+
+% Author and supervisor
+\begin{texto}[6cm]
+Grupo 3:\\
+Ricardo \textsc{Ferro} \hfill nº 72870\\
+Gonçalo \textsc{Glória}	\hfill nº 72873\\
+Diogo \textsc{Salgueiro} \hfill nº 72777\\
+Jorge \textsc{Matos} \hfill nº 72970\\
+Imran \textsc{Mamade} \hfill nº 73325\\
+Nuno \textsc{Bajanca} \hfill nº 73700\\
+\end{texto}
+
+
+\vfill
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+\end{titlepage}

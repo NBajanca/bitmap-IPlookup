@@ -1,0 +1,43 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Theoretical Basis}{2}{chapter.2}
+\contentsline {section}{\numberline {2.1}SDN}{2}{section.2.1}
+\contentsline {section}{\numberline {2.2}Mininet}{2}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Why Mininet?}{3}{subsection.2.2.1}
+\contentsline {section}{\numberline {2.3}OpenFlow}{3}{section.2.3}
+\contentsline {section}{\numberline {2.4}Ryu Controller}{4}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}How a Ryu Controller Fits in SDN environments}{4}{subsection.2.4.1}
+\contentsline {section}{\numberline {2.5}IP lookup}{5}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Performance metrics}{5}{subsection.2.5.1}
+\contentsline {subsubsection}{Lookup speed}{5}{section*.4}
+\contentsline {subsubsection}{Storage requirement}{5}{section*.5}
+\contentsline {subsubsection}{Update time (of lookup tables)}{5}{section*.6}
+\contentsline {subsubsection}{Scalability}{5}{section*.7}
+\contentsline {subsubsection}{Flexibility in implementation}{5}{section*.8}
+\contentsline {subsection}{\numberline {2.5.2}Binary Trie algorithm}{6}{subsection.2.5.2}
+\contentsline {subsubsection}{Performance}{6}{section*.9}
+\contentsline {subsection}{\numberline {2.5.3}Bitmap Tree algorithm}{6}{subsection.2.5.3}
+\contentsline {subsubsection}{Performance}{7}{section*.10}
+\contentsline {subsection}{\numberline {2.5.4}Comparison between algorithms}{7}{subsection.2.5.4}
+\contentsline {chapter}{\numberline {3}Implementation}{8}{chapter.3}
+\contentsline {section}{\numberline {3.1}Topology and configuration }{8}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Configuration file}{8}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Topology file}{8}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Lookup algorithms}{8}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Nodes}{10}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Tree Creation}{10}{subsection.3.2.2}
+\contentsline {subsubsection}{Binary Trie}{10}{section*.11}
+\contentsline {subsubsection}{Bitmap Tree}{11}{section*.12}
+\contentsline {subsection}{\numberline {3.2.3}Lookup implementation}{12}{subsection.3.2.3}
+\contentsline {subsubsection}{Binary Trie}{13}{section*.13}
+\contentsline {subsubsection}{Bitmap Tree}{13}{section*.14}
+\contentsline {section}{\numberline {3.3}Reading Configuration File}{13}{section.3.3}
+\contentsline {section}{\numberline {3.4}Timers}{13}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Timers in the controler }{13}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Timers average via Rest API}{14}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}Results}{15}{chapter.4}
+\contentsline {section}{\numberline {4.1}Stride}{15}{section.4.1}
+\contentsline {section}{\numberline {4.2}Network sizes}{15}{section.4.2}
+\contentsline {section}{\numberline {4.3}Binary vs Bitmap}{16}{section.4.3}
+\contentsline {chapter}{\numberline {5}Conclusions}{17}{chapter.5}
+\contentsline {chapter}{\numberline {6}Bibliography}{18}{chapter.6}

@@ -1,0 +1,31 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Theoretical Basis}{}% 2
+\BOOKMARK [1][-]{section.2.1}{SDN}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Mininet}{chapter.2}% 4
+\BOOKMARK [2][-]{subsection.2.2.1}{Why Mininet?}{section.2.2}% 5
+\BOOKMARK [1][-]{section.2.3}{OpenFlow}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.4}{Ryu Controller}{chapter.2}% 7
+\BOOKMARK [2][-]{subsection.2.4.1}{How a Ryu Controller Fits in SDN environments}{section.2.4}% 8
+\BOOKMARK [1][-]{section.2.5}{IP lookup}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.5.1}{Performance metrics}{section.2.5}% 10
+\BOOKMARK [2][-]{subsection.2.5.2}{Binary Trie algorithm}{section.2.5}% 11
+\BOOKMARK [2][-]{subsection.2.5.3}{Bitmap Tree algorithm}{section.2.5}% 12
+\BOOKMARK [2][-]{subsection.2.5.4}{Comparison between algorithms}{section.2.5}% 13
+\BOOKMARK [0][-]{chapter.3}{Implementation}{}% 14
+\BOOKMARK [1][-]{section.3.1}{Topology and configuration }{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.1.1}{Configuration file}{section.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.1.2}{Topology file}{section.3.1}% 17
+\BOOKMARK [1][-]{section.3.2}{Lookup algorithms}{chapter.3}% 18
+\BOOKMARK [2][-]{subsection.3.2.1}{Nodes}{section.3.2}% 19
+\BOOKMARK [2][-]{subsection.3.2.2}{Tree Creation}{section.3.2}% 20
+\BOOKMARK [2][-]{subsection.3.2.3}{Lookup implementation}{section.3.2}% 21
+\BOOKMARK [1][-]{section.3.3}{Reading Configuration File}{chapter.3}% 22
+\BOOKMARK [1][-]{section.3.4}{Timers}{chapter.3}% 23
+\BOOKMARK [2][-]{subsection.3.4.1}{Timers in the controler }{section.3.4}% 24
+\BOOKMARK [2][-]{subsection.3.4.2}{Timers average via Rest API}{section.3.4}% 25
+\BOOKMARK [0][-]{chapter.4}{Results}{}% 26
+\BOOKMARK [1][-]{section.4.1}{Stride}{chapter.4}% 27
+\BOOKMARK [1][-]{section.4.2}{Network sizes}{chapter.4}% 28
+\BOOKMARK [1][-]{section.4.3}{Binary vs Bitmap}{chapter.4}% 29
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 30
+\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 31

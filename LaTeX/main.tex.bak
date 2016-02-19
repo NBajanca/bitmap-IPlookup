@@ -1,0 +1,454 @@
+\documentclass[]{report}
+
+\usepackage[pdftex]{graphicx}
+\usepackage[utf8x]{inputenc}
+\usepackage[official]{eurosym}
+\usepackage[portuguese]{babel}
+\usepackage{indentfirst} 		%To ident the first paragraph after a title
+
+\usepackage[a4paper,margin=3cm,footskip=.5cm]{geometry}
+
+%Tables and Figure with numbering not based on sections
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+\usepackage{caption}
+
+\usepackage{float}
+\usepackage{rotfloat}
+
+%Hiperlinks in content list
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+%Authors name centered
+\newenvironment{texto}[1][\textwidth]{
+   \begin{center} % so the minipage is centered
+   \begin{minipage}[t]{#1}
+   \raggedright % so the minipage's text is left justified
+}{
+  \end{minipage}
+   \end{center}
+}
+
+%Word Chapter doesn´t appear
+\makeatletter
+\def\@makechapterhead#1{%
+  \vspace*{40\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \interlinepenalty\@M
+    \Huge\bfseries  \thechapter.\quad #1\par\nobreak
+    \vskip 30\p@
+  }}
+\makeatother
+
+
+\begin{document}
+
+
+%import cover
+\input{./title.tex}
+\pagenumbering{roman}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter{Introdução}
+O estudo da gestão de projectos é uma área de extrema importância no que diz respeito à realização de qualquer projecto, seja este de Engenharia, Gestão ou qualquer outra área. Planear um projecto de forma correcta começa por escolher um bom líder, aquele que seja capaz de fazer as melhores escolhas por forma a ir ao encontro do interesse de todos os intervenientes no projecto, acompanhando assim o projecto desde o começo até à sua conclusão.
+
+Com este projecto pretende-se instalar uma estação base (EB) num comboio que faz a ligação Lisboa-Porto, com a finalidade de fornecer serviço de WIFI em todas as carruagens durante toda a viagem. Como grupo desempenhamos o papel do líder de projecto de uma empresa de telecomunicações que ganhou o concurso para a realização deste projecto. 
+
+Através dos conhecimentos adquiridos na unidade curricular de Gestão de Projectos de Engenharia vamos implementar as boas práticas e metodologias da gestão de projectos por forma a garantir o sucesso deste projecto, assegurando uma ligação de WIFI estável a todos os clientes da empresa de comboios que efectuem a ligação Lisboa-Porto.
+
+Neste relatório serão identificadas as entidades envolvidas no projecto e será feita uma analise de todos os processos do mesmo, nomeadamente a analise de fraquezas e forças de mercado bem como a gestão de riscos associados ao projectos, entre muitos outros processos.
+
+\pagenumbering{arabic}
+\chapter{Gestão do Projecto}
+A gestão do projecto é composta por diversas fases que começam pela inicialização do projecto, passam pelo desenvolvimento, execução, monitorização e controlo e acabam no encerramento do projecto.
+\section{Inicialização - \emph{Project Charter}}
+De acordo com o PMBOK, o \emph{Project Charter} é o documento que autoriza formalmente um projecto, documentando os seus requerimentos que vão satisfazer as necessidades e expectativas dos \emph{stakeholders}.
+
+\subsection{Objectivo}
+Neste trabalho temos como objectivo o planeamento e instalação de estações de base de telecomunicações de uma operadora de sistemas de comunicações móveis (MCS – Mobile Communication System), da qual fazemos parte como Líder de Projecto. A instalação será feita nos comboios Alfa-Pendular, da empresa Comboios de Portugal (CP), que fazem a ligação Lisboa-Porto, com o objectivo de providenciar acesso WIFI em todo o percurso.
+
+\subsection{Requisitos}
+A definição dos requisitos do projecto permite uma organização temporal, orçamental e estrutural de acordo com os seus critérios. Desta forma evita-se a necessidade de continuamente restruturar o projecto durante as suas várias fases de desenvolvimento.
+Os requisitos do projecto são então:
+\begin{itemize}
+	\item Instalação da estação base e dos \emph{Wireless Access Points} (WAP) em cada comboio;
+	\item Garantir a concordância entre os diversos \emph{stakeholders};
+	\item Instalar o equipamento sem danificar nem pôr em causa o correcto funcionamento do comboio;
+	\item Definir a calendarização da instalação para não existirem interrupções no serviço de transporte de passageiros;
+	\item Realizar o projecto dentro do tempo previsto e manter os gastos dentro do orçamento estipulado.
+	\item Garantir a qualidade do serviço de acesso à internet de forma a garantir a sua disponibilidade durante toda a viagem. O serviço deve ter níveis de segurança e velocidades de recepção e envio de dados aceitáveis para os passageiros.
+\end{itemize}
+
+\subsection{Stakeholders}
+Qualquer projecto de gestão em engenharia envolve intervenientes das mais diversas áreas, tendo cada um diferentes interesses no projecto.
+Neste projecto os stakeholders podem ser classificados como:
+
+\begin{enumerate}
+	\item Internos:
+	\begin{itemize}
+		\item Líder do Projecto: aquele que é responsavel por liderar o projecto;
+		\item Departamento de Engenharia e Rádio: responsável pela validação do projecto desenvolvido; 
+		\item Departamento Legal: responsável pelos contratos e questões legais que dizem respeito ao projecto;
+		\item Departamento de Gestão de Projectos: responsável pela gestão do projecto; 
+		\item Departamento de Regulação e Controlo: responsáveis por assegurar que o projecto está de acrodo com todas as normas e regulamentos; 
+		\item Departamento de Aquisição: responsável pela compra de materiais para o desenvolvimento do projecto.
+	\end{itemize}
+	\item Externos:
+	\begin{enumerate}
+		\item Externos contratados:
+		\begin{itemize}
+			\item Empresa de construção: responsável pela construção da infraestrutura; 
+			\item Empresa de comboio - Comboio de Portugal (CP);
+		\end{itemize}
+		\item Externos não-contractados:
+		\begin{itemize}
+			\item Autoridade Nacional de Comunicações (ANACOM): reguladora de Telecomunicações;
+		\end{itemize}
+	\end{enumerate}
+\end{enumerate}			
+		
+\subsection{Análise de Riscos e Plano de Contingência}
+Como o projeto envolve fatores e stakeholders externos um planeamento minucioso não é suficiente para garantir o seu sucesso. É importante a análise dos riscos e criação de planos de contingência para cada um deles de forma a minimizar o seu impacto.
+
+A abordagem de análise de riscos consistiu na criação de uma matriz de análise de riscos qualitativa com base na definição que se encontra no PMBOK (Cap.11). Foi analisada a probabilidade e as consequências de uma forma qualitativa e são apresentados planos de contingência que visam prevenção, transferência ou mitigação do risco. A anáise pode ser encontrada na Tabela \ref{tab:matriz_riscos} presente no Anexo I.
+
+Foi ainda elaborada uma matriz de probabilidade e impacto tendo em conta a definição que se encontra no PMBOK (Cap. 11). O impacto de um dado risco é obtido através da sua probabilidade e do grau de severidade das consequências. Embora não seja evidente nesta abordagem o impacto de um risco com elevada probabilidade mas consequências pouco severas não deve ser tratado da mesma forma que um risco com baixa probabilidade de ocorrência mas consequências de gravidade elevada. A matriz de probabilidades e impacto pode ser consultada na Tabela \ref{tab:matriz_prob} presente no Anexo I.
+
+É ainda importante salientar as diferenças entre transferência, prevenção e mitigação do risco.
+\begin{itemize}
+\item Transferência de risco: Departamento de Gestão transfere o risco para terceiros (empresas externas);
+\item Prevenção de risco: Visa a eliminação de uma certa ameaça;
+\item Mitigação de risco: Visa a redução da probabilidade de ocorrências ou o impacto de um certo risco.
+\end{itemize}
+
+\section{Planeamento}
+O correcto planeamento do projecto reduz a probabilidade do mesmo ter falhas durante a implementação contribuindo para o seu sucesso.
+\subsection{Scope}
+O scope de um projecto é, de acordo com o PMBOK, todo o trabalho necessário para a realização de um projecto com todas as suas especificações durante o seu ciclo de vida, deixando de parte tudo o que não esteja directamente relacionado com os objectivos do projecto.
+
+Conforme já foi referido, o projecto é a instalação de uma estação base que providencie acesso WIFI estável aos utilizadores da ligação Lisboa-Porto através de comboio. 
+
+\subsection{\emph{Work Breakdown Structure} (WBS)}
+Após a fase de iniciação do projecto é necessário definir a estrutura de execução das tarefas a realizar durante o projecto – Work Breakdown Structure. A criação da WBS permite obter uma lista de tarefas (e respectivas dependências entre as mesmas) fácil de analisar e controlar.
+
+Para este projecto, optou-se por subdividir a WBS em cinco etapas principais, cada uma contendo as respectivas tarefas elementares. No anexo IV, figura \ref{fig:wbs_ms} apresenta-se a WBS criada no Microsoft Project, que contém a duração estimada e o custo para cada tarefa. É necessário salientar que a alocação de recursos de 100\% corresponde a designar uma pessoa de um dado departamento, uma alocação de 200\% corresponde a alocar duas pessoas e assim sucessivamente.
+
+O método utilizado para a calendarização das tarefas foi, na sua maioria, o senso comum.
+	
+No anexo V, figura \ref{fig:wbs}, encontra-se um diagrama da WBS, com o intuito de ser mais perceptível o encadeamento das tarefas a realizar. É fornecida, no anexo VI tabela \ref{tab:wbs_leg}, uma breve descrição de cada tarefa presente na WBS.
+
+
+\subsection{Alocação de Recursos}
+De forma a realizar uma análise de recursos é necessário identificar os mesmos e associar a estes os devidos custos.
+
+Em relação aos departamentos internos:
+\begin{itemize}
+	\item Líder de projecto – 1 pessoa;
+	\item Departamento de engenharia rádio – 4 pessoas;
+	\item Departamento de regulação e controlo – 1 pessoa;
+	\item Departamento de gestão – 3 pessoas;
+	\item Departamento jurídico – 2 pessoas;
+	\item Departamento de compras – 1 pessoa.
+\end{itemize}
+
+Adicionalmente foi contratado um construtor, sendo este uma entidade externa.
+
+A atribuição dos custos foi feita da seguinte forma:
+\begin{itemize}
+	\item Líder de projecto – 100€/hora;
+	\item Departamento de engenharia rádio – 75€/hora;
+	\item Departamento de regulação e controlo – 50€/hora;
+	\item Departamento de gestão – 75€/hora;
+	\item Departamento jurídico – 75€/hora;
+	\item Departamento de compras – 50€/hora;
+	\item Construtor – 10 000€/serviço.
+\end{itemize}
+
+Sendo o Construtor pago por serviço e não por hora, este não tem horas alocadas. Em tarefas pré-construção este foi adicionado como consultor sem custos, visto que este serviço se encontra incluído no preço total. O custo do construtor foi adicionado no separador \emph{Resource Sheet} como custo de trabalho. 
+
+Através de uma análise vaga dos horários Lisboa-Porto disponibilizados pela CP (Comboios de Portugal), assumiu-se que a instalação seria feita em cerca de cinco comboios, com um custo de 1 000€ por antena. Assumindo que cada comboio tem seis carruagem, será feita a instalação de um ponto de acesso (AP) por carruagem (300€/ AP). Estes custos materiais foram igualmente adicionados na \emph{Resource Sheet} no \emph{MS Project}. Estes recursos foram adicionados na tarefa respectiva, juntamente com o número de unidades.
+
+No anexo II, figura \ref{fig:alocacao_horas} e tabela \ref{tab:alocacao_horas_tab}, podemos verificar a alocação de horas por departamento. Verifica-se que o departamento com mais horas é o departamento de engenharia rádio.
+
+Através da análise do diagrama GANTT, presente na figura \ref{fig:wbs_gantt} no anexo VII, podemos verificar também o número de pessoas alocadas para cada tarefa. A lógica seguida foi: alocação de 100\% significa que está 1 pessoa alocada, 200\% corresponde a 2 pessoas e 300\% corresponde a 3 pessoas.
+
+
+\subsection{Análise de Custos}
+Tendo em conta a alocação de recursos descrita e as atribuições de custos definidas, podemos verificar os seguintes custos totais por departamento:
+\begin{itemize}
+	\item Líder de projecto – 4 400€;
+	\item Departamento de engenharia rádio – 14 400€;
+	\item Departamento de regulação e controlo – 200€;
+	\item Departamento de gestão – 5 700€;
+	\item Departamento jurídico – 1 200€;
+	\item Departamento de compras – 1 600€;
+	\item Construtor – 10 000€;
+	\item Pontos de acesso e cablagem – 9 000€ (300€/und.);
+	\item Antenas – 5 000€ (1 000€/und.).
+\end{itemize}
+
+Temos então um custo total de 51 500€ para a instalação das estações base e pontos de acesso, garantindo acesso Wi-Fi aos clientes da CP nos cinco comboios que fazem a ligação Lisboa-Porto.
+
+
+\subsection{Plano de comunicação}
+
+A comunicação entre os vários intervenientes de um projecto é um ponto crucial ao longo do seu desenvolvimento. Um mau plano de comunicações ou processos de comunicação deficientes podem resultar em atrasos ou no fracasso do projecto.
+
+Desta forma, é necessário elaborar um plano de comunicação que forneça os processos necessários a uma comunicação eficaz, tendo em conta a existência de uma componente interna e uma componente externa.
+
+\subsubsection{Componente interna}
+Esta componente do plano de comunicações consiste na comunicação entre os diversos departamentos da nossa operadora. Nesta componente, o principal objectivo é a troca de informação de um modo homogéneo, permitindo o fácil acompanhamento do projecto por todos os intervenientes.
+
+A comunicação interna da empresa é efectuada através de infra-estruturas comuns a todos os departamentos, como é o caso da rede telefónica interna, o e-mail e serviços de mensagens rápidas. É necessário também garantir que os documentos relevantes para o projecto possam ser acedidos e arquivados facilmente. Para tal, podem ser utilizados servidores internos ou outro tipo de solução de armazenamento fornecido por terceiros (e.g. cloud).
+
+As reuniões entres os vários departamentos da empresa podem ser realizados de uma forma mais ou menos formal, dependendo da importância das decisões a tomar ou da informação a transmitir.
+
+É apresentado no Anexo XII, Tabela \ref{tab:comunication_interna}, a componente interna do plano de comunicação.
+
+\subsubsection{Componente externa}
+A componente externa diz respeito à comunicação realizada entre a operadora e as entidades externas à mesma. Esta componente tem como objectivo garantir que as tarefas que dependem de entidades e factores externos à empresa sejam executadas correctamente.
+
+Os meios de comunicação utilizados serão essencialmente o correio electrónico e o contacto telefónico. No entanto, a existência de etapas cruciais no desenvolvimento do projecto implicam a existência de reuniões formais, seja de forma presencial ou através de videoconferências.
+
+É apresentado no Anexo XII, Tabela \ref{tab:comunication_externa}, a componente externa do plano de comunicação.
+
+
+\subsection{\emph{Responsibility Assignment Matrix} (RAM)}
+A Responsibility Assignment Matrix (RAM) descreve a participação dos vários Stakeholders associados às mais diferentes tarefas relacionadas com o desenvolvimento do projecto. A RAM é especialmente útil na clarificação de tarefas e responsabilidades entre os vários departamentos.
+
+A matriz, apresentada na Tabela \ref{tab:RAM} presente no Anexo XI, tem em conta quatro responsabilidades chave: \emph{responsible} , \emph{accountable} , \emph{consult}, \emph{inform} – RACI. Estes quatro aspectos são baseados nas definições que se encontram no Capítulo 9 do PMBOK.
+\subsection{Diagrama de GANTT}
+Uma vez definido o WBS do projecto podemos criar o diagrama de Gantt. 
+
+Os diagramas de Gantt são ferramentas usadas para analisar e planear projectos, uma vez que permitem calendarizar tarefas, alocar recursos e planear actividades. 
+
+O diagrama de Gantt consiste num gráfico que permite ilustrar de forma sucinta e clara as diferentes etapas de um projecto. É constituído por barras horizontais que correspondem às diferentes actividades que compõem o WBS, as quais estão indexadas de acordo com a duração e respectivas predecessoras. A partir do diagrama de Gantt podem também retirar-se conclusões acerca dos custos resultantes do consumo de recursos.
+
+Na figura \ref{fig:wbs_gantt} presente no anexo VII apresenta-se o diagrama de Gantt do projecto desenvolvido, obtido através do MS Project.
+
+\subsection{Diagrama de PERT}
+Program Evaluation and Review Technique (PERT) refere-se a uma ferramenta utilizada no gerenciamento de projectos. Segundo o PMBOK, a definição da sequência de actividades, a estimativa dos recursos das actividades, a estimativa da duração das actividades, o desenvolvimento de uma calendarização e o controlo da mesma são as principais finalidades do PERT.
+
+
+Associado ao PERT, muitas vezes, surge o conceito de caminho critico (CPM-Critical Path Method) que consiste na duração mais curta do projecto que é possível definir. No anexo VIII, figura \ref{fig:wbs_gantt_critical}, encontra-se o diagrama de Gantt com o caminho crítico traçado a vermelho.
+
+O projecto desenvolvido tem uma duração de 43 dias, com inicio a 8 de Junho de 2015 e término a 5 de Agosto de 2015.
+
+No anexo IX, figura \ref{fig:pert}, encontra-se o diagrama de PERT produzido pelo MS Project.
+
+Nesse mesmo anexo, o diagrama PERT apresenta a vermelho o caminho critico e somando os tempos de execução de cada tarefa pertencente ao caminho crítico chega-se ao tempo mínimo possível de execução do projecto.
+
+No diagrama PERT existem algumas tarefas que se denominam de slacks que correspondem a tarefas que ocorrem simultaneamente a outras ou que não são precedentes de nenhuma outra tarefa e como tal são tarefas que não influenciam o caminho critico, essas tarefas estão apresentadas no diagrama do anexo IX a azul.
+
+\section{Execução}
+Durante esta fase do projecto é feita a gestão da execução do projecto, que passa por garantir que os standards de qualidade e as definições operacionais estão a ser usadas. 
+ 
+É também nesta fase que a equipa do projecto é constituída e gerida e que os planos de comunicação são postos em prática, sendo também feita uma gestão constante das expectativas dos \emph{stakeholders}.
+
+\section{Monitorização e Controlo}
+Esta fase do projecto consiste em rever e regular o processo e a performance do projecto identificando qualquer área em que é requerida uma alteração no plano.
+\subsection{Controlo de Qualidade}
+
+Para o sucesso do projeto é necessário garantir que os objetivos / requisitos propostos são atingidos tendo em conta os tempos e os custos definidos tal como a qualidade do produto final apresentado ao cliente e utilizadores.
+
+De forma a assegurar o controlo de qualidade do projeto utiliza-se o método descrito na bibliografia como Theory of Constraints (\emph{Critical Chain}). Este método consiste em identificar e analisar o elo mais fraco de forma a melhorar a sua performance. Após o seu tratamento procede-se à identificação do elo mais fraco seguinte.
+
+É da responsabilidade do Departamento de Gestão monitorizar estes aspetos e ainda assegurar que os custos, o tempo e a qualidade do projeto estão de acordo com as especificações definidas.
+
+É necessário ter em conta os seguintes aspetos de forma a assegurar a qualidade do projeto:
+
+\begin{itemize}
+\item Verificar o impacto dos riscos e aplicação do plano de contingência;
+\item Verificar os custos do projeto comparando com o orçamento esperado;
+\item Identificação de tarefas mais exigentes que podem comprometer o projeto temporal ou orçamentalmente de forma a contornar essas mesmas dificuldades;
+\item No caso de alterações feitas ao planeamento do projeto, identificar o efeito propagado nas diferentes tarefas e elaborar um plano que diminua os efeitos das alterações;
+\end{itemize}
+
+De forma a garantir os standards de qualidade é necessário a realização de testes de controlo que são usados para verificar os seguintes aspetos:
+\begin{itemize}
+\item Qualidade do sinal;
+\item Existência de interferências / ruído;
+\item Bom Funcionamento de todo o equipamento.
+\end{itemize}
+
+Para garantir a qualidade do serviço ao longo do tempo é importante a manutenção do equipamento periodicamente ou caso haja reclamações dos utilizadores. No entanto, estas tarefas não estão no âmbito do projecto desenvolvido.
+
+\section{Encerramento}
+É nesta fase que se finalizam todas as actividades realizadas pelos diversos departamentos, procedendo-se a uma análise da performance geral na realização do projecto.
+
+Seguindo a abordagem do PMBOK, são resultados desta fase:
+\begin{itemize}
+	\item Documento de Procuração: Documentação do contrato indexada, que inclui o contrato fechado, preparado para a inclusão dos ficheiros finais do projecto.
+	\item Aceitação do Serviço Entregue: Um documento, em nome da CP, que fornece a aceitação do serviço prestado.
+	\item Documentação das \emph{lessons learned}: Informação sobre o que foi experienciado e as melhorias recomendadas para um projecto futuro.
+\end{itemize}
+\chapter{Conclusões}
+Este relatório, teve como objectivo explicitar a cadeia de processos pela qual os gestores dum projecto de engenharia passam na tomada de decisões relativas a um projecto.
+
+Durante este projecto foi seguida a metodologia de Gestão de Projecto descrita ao longo do PMBOK, mantendo, no entanto, uma mente aberta, tomando algumas decisões com base em alguns dos conteúdos abordados nas aulas, como o \emph{Critical Chain}.
+
+Em jeito de conclusão, ficou claro que independentemente da dimensão dum projecto, para garantir o seu sucesso, é necessário fazer um correcto planeamento do mesmo e tomar grande atenção aos \emph{stakeholders}, garantindo boa comunicação entre todos os envolvidos.
+
+\chapter{Bibliografia}
+\begin{enumerate}
+	\item CORREIA, Luís M. (2015), Project of a Base Station
+in a Train, Slides das Aulas Teóricas de Gestão de Projectos de Engenharia, IST;
+	\item CORREIA, Luís M. (2015),GPE	Telecommunications	Project, IST;
+	\item FIGUEIREDO, José (2015), Slides das Aulas Teóricas de Gestão de Projectos de Engenharia, IST;
+	\item PMI (2013), A Guide to the Project Management Body of Knowledge (PMBOK Guide), Pensilvânia: Project Management Institute;
+	\item GOLDRATT, Eliyahu (1997), Critical Chain, Massachusetts: North River Press;
+	\item CP - Comboios de Portugal: http://www.cp.pt/
+\end{enumerate}
+
+\chapter{Anexos}
+\section{Anexo I}
+\label{sec:anexo_i}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\captionof{table}{Matriz de Riscos.}
+\label{tab:matriz_riscos}
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./matriz_riscos.png}
+  }
+\end{minipage}
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\captionof{table}{Matriz de Probabilidades/ Impactos.Cores classificam o impacto. Verde corresponde a baixo impacto, amarelo a impacto médio e vermelho a impacto elevado.}
+\label{tab:matriz_prob}
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./matriz_prob.png}
+  }
+\end{minipage}
+
+\section{Anexo II}
+\label{sec:anexo_ii}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./alocacao_horas.png}
+  }
+\captionof{figure}{Alocação de horas dos vários Departamentos.}\label{fig:alocacao_horas}
+\end{minipage}
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\captionof{table}{Alocação de horas dos vários Departamentos.}
+\label{tab:alocacao_horas_tab}
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./alocacao_horas_tab.png}
+  }
+\end{minipage}
+
+\section{Anexo III}
+\label{sec:anexo_iii}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\label{tab:cashflow}
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./cashflow.png}
+  }
+\captionof{figure}{Cash Flow do projecto.}
+\end{minipage}
+
+\section{Anexo IV}
+\label{sec:anexo_iv}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./wbs_ms.png}
+  }
+\captionof{figure}{WBS no \emph{MS Project}.}
+\label{fig:wbs_ms}
+\end{minipage}
+
+\section{Anexo V}
+\label{sec:anexo_v}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./wbs.png}
+  }
+\captionof{figure}{WBS.}
+\label{fig:wbs}
+\end{minipage}
+
+\section{Anexo VI}
+\label{sec:anexo_vi}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\captionof{table}{Legenda da WBS.}
+\label{tab:wbs_leg}
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./wbs_leg.pdf}
+  }
+\end{minipage}
+
+\section{Anexo VII}
+\label{sec:anexo_vii}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./wbs_gantt.png}
+  }
+\captionof{figure}{WBS e GANTT produzidas no \emph{MS Project}.}
+\label{fig:wbs_gantt}
+\end{minipage}
+
+\section{Anexo VIII}
+\label{sec:anexo_viii}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./wbs_gantt_critical.png}
+  }
+\captionof{figure}{Caminho crítico.}
+\label{fig:wbs_gantt_critical}
+\end{minipage}
+
+\section{Anexo IX}
+\label{sec:anexo_ix}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./pert.pdf}
+  }
+\captionof{figure}{PERT produzida no \emph{MS Project}.}
+\label{fig:pert}
+\end{minipage}
+
+\section{Anexo X}
+\label{sec:anexo_x}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./resume.png}
+  }
+\captionof{figure}{Resumo do Projecto.}
+\label{fig:resume}
+\end{minipage}
+
+
+\section{Anexo XI}
+\label{sec:anexo_xi}
+\begin{table}[H]
+\caption{\emph{Responsibility Assignment Matrix} (RAM).}
+\includegraphics[width=\textwidth]{./RAM.pdf}
+\label{tab:RAM}
+\end{table}
+
+
+\section{Anexo XII}
+\label{sec:anexo_xii}
+\begin{table}[H]
+\caption{Plano de Comunicações - Componente Interna}
+\includegraphics[width=\textwidth]{./comunication_interna.png}
+\label{tab:comunication_interna}
+\end{table}
+\begin{table}[H]
+\caption{Plano de Comunicações - Componente Externa}
+\includegraphics[width=\textwidth]{./comunication_externa.png}
+\label{tab:comunication_externa}
+\end{table}
+\end{document}
