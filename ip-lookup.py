@@ -50,6 +50,10 @@ DPID   = 4
 
 STRIDE = 8
 
+SUB8 = 0
+SUB16 = 1
+SUB24 = 2
+
 # Main class for switch
 class SimpleSwitch(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
@@ -97,12 +101,21 @@ class SimpleSwitch(app_manager.RyuApp):
 
 
         #Timers Initialization
-        self.timer["lookup_bitmap"] = []
-        self.timer["lookup_trie"] = []
-        self.timer["processing_bitmap"] = []
-        self.timer["processing_trie"] = []
-        self.timer["lookup_percentage_bitmap"] = []
-        self.timer["lookup_percentage_trie"] = []
+        self.timer["lookup_bitmap"] = {}
+        self.timer["lookup_trie"] = {}
+        self.timer["processing_bitmap"] = {}
+        self.timer["processing_trie"] = {}
+        self.timer["lookup_percentage_bitmap"] = {}
+        self.timer["lookup_percentage_trie"] = {}
+
+        for x in xrange(SUB8,SUB24 + 1):
+            self.timer["lookup_bitmap"][x] = []
+            self.timer["lookup_trie"][x] = []
+            self.timer["processing_bitmap"][x] = []
+            self.timer["processing_trie"][x] = []
+            self.timer["lookup_percentage_bitmap"][x] = []
+            self.timer["lookup_percentage_trie"][x] = []
+
 
     def send_arp_reply(self, datapath, srcMac, srcIp, dstMac, dstIp, outPort):
         e = ethernet.ethernet(dstMac, srcMac, ether.ETH_TYPE_ARP)
@@ -224,12 +237,19 @@ class SimpleSwitch(app_manager.RyuApp):
             elapsed_time_processing = time.time() - start_time_processing
 
             #Process timers
-            self.timer["lookup_bitmap"].append(elapsed_time_lookup_bitmap)
-            self.timer["lookup_trie"].append(elapsed_time_lookup_trie)
-            self.timer["processing_bitmap"].append(elapsed_time_processing - elapsed_time_lookup_trie)
-            self.timer["processing_trie"].append(elapsed_time_processing - elapsed_time_lookup_bitmap)
-            self.timer["lookup_percentage_bitmap"].append(elapsed_time_lookup_bitmap/(elapsed_time_processing- elapsed_time_lookup_trie))
-            self.timer["lookup_percentage_trie"].append(elapsed_time_lookup_trie/(elapsed_time_processing- elapsed_time_lookup_bitmap))
+            if (self.switch[sw][SUBNET] == "8"):
+                subnet = SUB8
+            elif (self.switch[sw][SUBNET] == "16"):
+                subnet = SUB16 
+            elif (self.switch[sw][SUBNET] == "24"):
+                subnet = SUB24 
+
+            self.timer["lookup_bitmap"][subnet].append(elapsed_time_lookup_bitmap)
+            self.timer["lookup_trie"][subnet].append(elapsed_time_lookup_trie)
+            self.timer["processing_bitmap"][subnet].append(elapsed_time_processing - elapsed_time_lookup_trie)
+            self.timer["processing_trie"][subnet].append(elapsed_time_processing - elapsed_time_lookup_bitmap)
+            self.timer["lookup_percentage_bitmap"][subnet].append(elapsed_time_lookup_bitmap/(elapsed_time_processing- elapsed_time_lookup_trie))
+            self.timer["lookup_percentage_trie"][subnet].append(elapsed_time_lookup_trie/(elapsed_time_processing- elapsed_time_lookup_bitmap))
             return
 
 
@@ -294,32 +314,40 @@ class LookupController(ControllerBase):
 
     @route('lookup', '/v1.0/lookup/timers',
            methods=['GET'])
-    def list_ip_to_mac_table(self, req, **kwargs):
+    def list_timers(self, req, **kwargs):
         elapsed_time_table = self.lookup_api_app.timer
 
-        if len(elapsed_time_table["lookup_bitmap"]):
-            elapsed_time_table["average_lookup_bitmap"] = sum(elapsed_time_table["lookup_bitmap"])/float(len(elapsed_time_table["lookup_bitmap"]))
-            elapsed_time_table["average_lookup_bitmap"] = elapsed_time_table["average_lookup_bitmap"] * 1000
+        elapsed_time_table["average_lookup_bitmap"] ={}
+        elapsed_time_table["average_lookup_trie"] = {}
+        elapsed_time_table["average_processing_bitmap"] = {}
+        elapsed_time_table["average_processing_trie"] = {}
+        elapsed_time_table["average_lookup_percentage_bitmap"] = {}
+        elapsed_time_table["average_lookup_percentage_trie"] = {}
 
-        if len(elapsed_time_table["lookup_trie"]):
-            elapsed_time_table["average_lookup_trie"] = sum(elapsed_time_table["lookup_trie"])/float(len(elapsed_time_table["lookup_trie"]))
-            elapsed_time_table["average_lookup_trie"] = elapsed_time_table["average_lookup_trie"] * 1000
+        for x in xrange(SUB8,SUB24 + 1):
+            if len(elapsed_time_table["lookup_bitmap"][x]):
+                elapsed_time_table["average_lookup_bitmap"][x] = sum(elapsed_time_table["lookup_bitmap"][x])/float(len(elapsed_time_table["lookup_bitmap"][x]))
+                elapsed_time_table["average_lookup_bitmap"][x] = elapsed_time_table["average_lookup_bitmap"][x] * 1000
 
-        if len(elapsed_time_table["processing_bitmap"]):
-            elapsed_time_table["average_processing_bitmap"] = sum(elapsed_time_table["processing_bitmap"])/float(len(elapsed_time_table["processing_bitmap"]))
-            elapsed_time_table["average_processing_bitmap"] = elapsed_time_table["average_processing_bitmap"] * 1000
+            if len(elapsed_time_table["lookup_trie"][x]):
+                elapsed_time_table["average_lookup_trie"][x] = sum(elapsed_time_table["lookup_trie"][x])/float(len(elapsed_time_table["lookup_trie"][x]))
+                elapsed_time_table["average_lookup_trie"][x] = elapsed_time_table["average_lookup_trie"][x] * 1000
 
-        if len(elapsed_time_table["processing_trie"]):
-            elapsed_time_table["average_processing_trie"] = sum(elapsed_time_table["processing_trie"])/float(len(elapsed_time_table["processing_trie"]))
-            elapsed_time_table["average_processing_trie"] = elapsed_time_table["average_processing_trie"] * 1000
+            if len(elapsed_time_table["processing_bitmap"][x]):
+                elapsed_time_table["average_processing_bitmap"][x] = sum(elapsed_time_table["processing_bitmap"][x])/float(len(elapsed_time_table["processing_bitmap"][x]))
+                elapsed_time_table["average_processing_bitmap"][x] = elapsed_time_table["average_processing_bitmap"][x] * 1000
 
-        if len(elapsed_time_table["lookup_percentage_bitmap"]):
-            elapsed_time_table["average_lookup_percentage_bitmap"] = sum(elapsed_time_table["lookup_percentage_bitmap"])/float(len(elapsed_time_table["lookup_percentage_bitmap"]))
-            elapsed_time_table["average_lookup_percentage_bitmap"] = elapsed_time_table["average_lookup_percentage_bitmap"] * 100
+            if len(elapsed_time_table["processing_trie"][x]):
+                elapsed_time_table["average_processing_trie"][x] = sum(elapsed_time_table["processing_trie"][x])/float(len(elapsed_time_table["processing_trie"][x]))
+                elapsed_time_table["average_processing_trie"][x] = elapsed_time_table["average_processing_trie"][x] * 1000
 
-        if len(elapsed_time_table["lookup_percentage_trie"]):
-            elapsed_time_table["average_lookup_percentage_trie"] = sum(elapsed_time_table["lookup_percentage_trie"])/float(len(elapsed_time_table["lookup_percentage_trie"]))
-            elapsed_time_table["average_lookup_percentage_trie"] = elapsed_time_table["average_lookup_percentage_trie"] * 100
+            if len(elapsed_time_table["lookup_percentage_bitmap"][x]):
+                elapsed_time_table["average_lookup_percentage_bitmap"][x] = sum(elapsed_time_table["lookup_percentage_bitmap"][x])/float(len(elapsed_time_table["lookup_percentage_bitmap"][x]))
+                elapsed_time_table["average_lookup_percentage_bitmap"][x] = elapsed_time_table["average_lookup_percentage_bitmap"][x] * 100
+
+            if len(elapsed_time_table["lookup_percentage_trie"][x]):
+                elapsed_time_table["average_lookup_percentage_trie"][x] = sum(elapsed_time_table["lookup_percentage_trie"][x])/float(len(elapsed_time_table["lookup_percentage_trie"][x]))
+                elapsed_time_table["average_lookup_percentage_trie"][x] = elapsed_time_table["average_lookup_percentage_trie"][x] * 100
 
         body = json.dumps(elapsed_time_table, sort_keys=True)
         return Response(content_type='application/json', body=body)
