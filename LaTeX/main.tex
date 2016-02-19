@@ -264,16 +264,24 @@ The config file is usually associated with the topology file.It is the file whic
 
 The topology file defines the physical structure of the network.It defines the number of switches,hosts and interconnections between them.
 
+\section{Controller}
+The RYU controller was provided by the professor in the laboratory and the following changes were made:
+\begin{itemize}
+\item Constructor
+\begin{itemize}
+\item The switches and host static information was replaced by ReadingFromFile class that will the explained in section \ref{sec:config};
+\item The two tries, that implement the algorithms, are created.
+\end{itemize}
+\item Packet Handler
+\begin{itemize}
+\item The lookup code was surronded by timers as explained in section \ref{sec:timers};
+\item The lookup table search was replaced by two calls to the lookup algorithms implemented.
+\end{itemize}
+\end{itemize}
+
+
 \section{Lookup algorithms}
 In this section the implementation of the tree bitmap and binary trie algorithms are going to be explained. The UML for this implementation is the one in figure \ref{fig:UML}.
-
-\begin{minipage}{\linewidth}% to keep image and caption on one page
-
-\makebox[\linewidth]{%to center the image
-  \includegraphics[width=\textwidth]{./uml.png}
-  }
-\captionof{figure}{UML}\label{fig:UML}
-\end{minipage}
 
 \subsection{Nodes}
 The nodes are represented through classes.
@@ -286,6 +294,14 @@ In the Bitmap Tree the root node is different from the rest of the nodes, so the
 \item Root Node - Subclass of Node, besides being a node it also has two lists, the results and the children.
 \end{itemize}
 This is done because python doesn’t have pointers so we couldn’t alloc memory for the children of a node and get the first memory position, instead we use a list (works like a vector) and the first memory position, present in every node, is just the index of the first object.
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+
+\makebox[\linewidth]{%to center the image
+  \includegraphics[width=\textwidth]{./uml.png}
+  }
+\captionof{figure}{UML}\label{fig:UML}
+\end{minipage}
 
 \subsection{Tree Creation}
 Both algorithms have the same fluxogram, represented in figure \ref{fig:flux}, for the construction of the tree so the Bitmap Tree is a subclass of the Binary Trie. This assures that all the methods done in the Binary  Trie are either used or overridden by the Bitmap Tree.
@@ -383,6 +399,7 @@ If a child is found the same procedure is done in it, if it isn’t than the las
 
 
 \section{Reading Configuration File}
+\label{sec:config}
 	Instead of having to do manually the creation of the topology of the network we read the config file and generate the topology. In the reading of the file we take all the information about the switches we need (IP, Mask, id) and then associate a sequential MAC address to each one and create the switch\textunderscore ip list and the switch list. We also read the ip of the hosts and to which switch they are connected. We also assign sequentially a MAC address to each one and then create the ip\textunderscore to\textunderscore mac list and mac\textunderscore to\textunderscore port list.
 	
 	In order to do this we basically use to methods:
@@ -393,6 +410,7 @@ If a child is found the same procedure is done in it, if it isn’t than the las
 
 
 \section{Timers}
+\label{sec:timers}
 \subsection{Timers in the controler  }
 
 Timers were implemented in the code to obtain the following results:

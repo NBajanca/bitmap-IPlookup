@@ -15,17 +15,18 @@
 \BOOKMARK [1][-]{section.3.1}{Topology and configuration }{chapter.3}% 15
 \BOOKMARK [2][-]{subsection.3.1.1}{Configuration file}{section.3.1}% 16
 \BOOKMARK [2][-]{subsection.3.1.2}{Topology file}{section.3.1}% 17
-\BOOKMARK [1][-]{section.3.2}{Lookup algorithms}{chapter.3}% 18
-\BOOKMARK [2][-]{subsection.3.2.1}{Nodes}{section.3.2}% 19
-\BOOKMARK [2][-]{subsection.3.2.2}{Tree Creation}{section.3.2}% 20
-\BOOKMARK [2][-]{subsection.3.2.3}{Lookup implementation}{section.3.2}% 21
-\BOOKMARK [1][-]{section.3.3}{Reading Configuration File}{chapter.3}% 22
-\BOOKMARK [1][-]{section.3.4}{Timers}{chapter.3}% 23
-\BOOKMARK [2][-]{subsection.3.4.1}{Timers in the controler }{section.3.4}% 24
-\BOOKMARK [2][-]{subsection.3.4.2}{Timers average via Rest API}{section.3.4}% 25
-\BOOKMARK [0][-]{chapter.4}{Results}{}% 26
-\BOOKMARK [1][-]{section.4.1}{Stride}{chapter.4}% 27
-\BOOKMARK [1][-]{section.4.2}{Network sizes}{chapter.4}% 28
-\BOOKMARK [1][-]{section.4.3}{Binary vs Bitmap}{chapter.4}% 29
-\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 30
-\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 31
+\BOOKMARK [1][-]{section.3.2}{Controller}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.3}{Lookup algorithms}{chapter.3}% 19
+\BOOKMARK [2][-]{subsection.3.3.1}{Nodes}{section.3.3}% 20
+\BOOKMARK [2][-]{subsection.3.3.2}{Tree Creation}{section.3.3}% 21
+\BOOKMARK [2][-]{subsection.3.3.3}{Lookup implementation}{section.3.3}% 22
+\BOOKMARK [1][-]{section.3.4}{Reading Configuration File}{chapter.3}% 23
+\BOOKMARK [1][-]{section.3.5}{Timers}{chapter.3}% 24
+\BOOKMARK [2][-]{subsection.3.5.1}{Timers in the controler }{section.3.5}% 25
+\BOOKMARK [2][-]{subsection.3.5.2}{Timers average via Rest API}{section.3.5}% 26
+\BOOKMARK [0][-]{chapter.4}{Results}{}% 27
+\BOOKMARK [1][-]{section.4.1}{Stride}{chapter.4}% 28
+\BOOKMARK [1][-]{section.4.2}{Network sizes}{chapter.4}% 29
+\BOOKMARK [1][-]{section.4.3}{Binary vs Bitmap}{chapter.4}% 30
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 31
+\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 32

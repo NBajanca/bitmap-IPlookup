@@ -23,21 +23,22 @@
 \contentsline {section}{\numberline {3.1}Topology and configuration }{8}{section.3.1}
 \contentsline {subsection}{\numberline {3.1.1}Configuration file}{8}{subsection.3.1.1}
 \contentsline {subsection}{\numberline {3.1.2}Topology file}{8}{subsection.3.1.2}
-\contentsline {section}{\numberline {3.2}Lookup algorithms}{8}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Nodes}{10}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Tree Creation}{10}{subsection.3.2.2}
-\contentsline {subsubsection}{Binary Trie}{10}{section*.11}
-\contentsline {subsubsection}{Bitmap Tree}{11}{section*.12}
-\contentsline {subsection}{\numberline {3.2.3}Lookup implementation}{12}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.2}Controller}{8}{section.3.2}
+\contentsline {section}{\numberline {3.3}Lookup algorithms}{9}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Nodes}{9}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Tree Creation}{11}{subsection.3.3.2}
+\contentsline {subsubsection}{Binary Trie}{11}{section*.11}
+\contentsline {subsubsection}{Bitmap Tree}{12}{section*.12}
+\contentsline {subsection}{\numberline {3.3.3}Lookup implementation}{13}{subsection.3.3.3}
 \contentsline {subsubsection}{Binary Trie}{13}{section*.13}
-\contentsline {subsubsection}{Bitmap Tree}{13}{section*.14}
-\contentsline {section}{\numberline {3.3}Reading Configuration File}{13}{section.3.3}
-\contentsline {section}{\numberline {3.4}Timers}{13}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Timers in the controler }{13}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}Timers average via Rest API}{14}{subsection.3.4.2}
-\contentsline {chapter}{\numberline {4}Results}{15}{chapter.4}
-\contentsline {section}{\numberline {4.1}Stride}{15}{section.4.1}
-\contentsline {section}{\numberline {4.2}Network sizes}{15}{section.4.2}
-\contentsline {section}{\numberline {4.3}Binary vs Bitmap}{16}{section.4.3}
-\contentsline {chapter}{\numberline {5}Conclusions}{17}{chapter.5}
-\contentsline {chapter}{\numberline {6}Bibliography}{18}{chapter.6}
+\contentsline {subsubsection}{Bitmap Tree}{14}{section*.14}
+\contentsline {section}{\numberline {3.4}Reading Configuration File}{14}{section.3.4}
+\contentsline {section}{\numberline {3.5}Timers}{14}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Timers in the controler }{14}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Timers average via Rest API}{15}{subsection.3.5.2}
+\contentsline {chapter}{\numberline {4}Results}{16}{chapter.4}
+\contentsline {section}{\numberline {4.1}Stride}{16}{section.4.1}
+\contentsline {section}{\numberline {4.2}Network sizes}{16}{section.4.2}
+\contentsline {section}{\numberline {4.3}Binary vs Bitmap}{17}{section.4.3}
+\contentsline {chapter}{\numberline {5}Conclusions}{18}{chapter.5}
+\contentsline {chapter}{\numberline {6}Bibliography}{19}{chapter.6}
